@@ -182,13 +182,8 @@ export default function ContactSection() {
                   <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">Pabrik & Workshop</p>
                   <p className="font-medium text-foreground mt-1 leading-snug">{company.address}</p>
                   <p className="text-xs text-muted-foreground mt-2 bg-muted px-2.5 py-1 rounded-full border inline-block">
-                    Lat: {map.lat.toFixed(6)}, Lng: {map.lng.toFixed(6)} • Zoom {map.zoom} • 34 provinsi
+                    Akses mudah, pengiriman nasional 34 provinsi
                   </p>
-                  {map.link && (
-                    <a href={map.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 mt-2 text-xs text-blue-600 hover:text-blue-700">
-                      <ExternalLink className="w-3 h-3" /> Buka di Google Maps
-                    </a>
-                  )}
                 </div>
               </div>
 
@@ -219,18 +214,7 @@ export default function ContactSection() {
                   title={`Lokasi Pabrik BSA GRC - ${map.address}`}
                 />
               </div>
-              <div className="bg-white rounded-xl border p-4 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold">Koordinat Kantor BSA GRC</p>
-                  <p className="text-xs text-muted-foreground font-mono mt-1">{map.lat}, {map.lng} (Zoom {map.zoom})</p>
-                  <p className="text-xs text-muted-foreground mt-1">Edit di /admin/settings → Lokasi Maps Kantor</p>
-                </div>
-                {map.link && (
-                  <a href={map.link} target="_blank" rel="noopener noreferrer" className="text-xs bg-maroon-700 text-white px-3 py-1.5 rounded-full hover:bg-maroon-800 flex items-center gap-1">
-                    <ExternalLink className="w-3 h-3" /> Buka Maps
-                  </a>
-                )}
-              </div>
+
             </div>
           </div>
 
