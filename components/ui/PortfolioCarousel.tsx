@@ -88,7 +88,7 @@ export default function PortfolioCarousel({ images, title, mainImage }: Portfoli
           </div>
         </div>
 
-        {/* Thumbnails Carousel - Supports >5 images with horizontal scroll */}
+        {/* Thumbnails Carousel - Supports lebih dari 5 images with horizontal scroll */}
         {uniqueImages.length > 1 && (
           <div className="relative">
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gold-200 scrollbar-track-muted/50 snap-x snap-mandatory">
@@ -108,7 +108,7 @@ export default function PortfolioCarousel({ images, title, mainImage }: Portfoli
               ))}
             </div>
 
-            {/* Scroll indicators for >5 */}
+            {/* Scroll indicators for lebih dari 5 */}
             {uniqueImages.length > 5 && (
               <div className="flex justify-center mt-2 gap-1">
                 {Array.from({ length: Math.ceil(uniqueImages.length / 5) }).map((_, groupIdx) => {

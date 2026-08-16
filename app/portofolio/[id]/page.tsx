@@ -111,7 +111,7 @@ export default async function PortfolioDetailPage({ params }: Props) {
         <section className="py-8 lg:py-12 bg-gradient-to-br from-white to-gold-50/30">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-              {/* Carousel - Supports >5 images */}
+              {/* Carousel - Supports lebih dari 5 images */}
               <div>
                 <PortfolioCarousel images={item.images || []} title={item.title} mainImage={item.image} />
               </div>
