@@ -31,11 +31,12 @@ async function main() {
   try {
     await db.delete(portfolios);
     await db.delete(services);
-    await db.delete(settings);
+    // Jangan hapus settings agar koordinat maps custom tidak hilang setiap seed
+    // await db.delete(settings);
     await db.delete(blogs);
     await db.delete(testimonials);
     await db.delete(faqs);
-    console.log("Cleared existing data");
+    console.log("Cleared existing data (except settings to preserve maps coordinates)");
   } catch (e) {
     console.log("Clear skipped, will create via drizzle-kit push", (e as Error).message);
   }
@@ -76,13 +77,20 @@ async function main() {
   }
   console.log(`Seeded ${servicesData.length} services`);
 
-  await db.insert(settings).values({
-    company: settingsData.company,
-    hero: settingsData.hero,
-    usp: settingsData.usp,
-    seo: settingsData.seo,
-  });
-  console.log("Seeded settings");
+  // Seed settings only if table empty - preserve custom maps coordinates
+  const existingSettings = await db.select().from(settings).limit(1).execute();
+  if (existingSettings.length === 0) {
+    await db.insert(settings).values({
+      company: settingsData.company,
+      hero: settingsData.hero,
+      usp: settingsData.usp,
+      seo: settingsData.seo,
+    });
+    console.log("Seeded settings (was empty)");
+  } else {
+    console.log("Settings already exists, skip to preserve custom maps coordinates. Use /admin/settings to edit.");
+    // Optionally update only non-map fields? For now skip entirely to preserve custom map
+  }
 
   for (const b of blogData) {
     await db.insert(blogs).values({
