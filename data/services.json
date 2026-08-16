@@ -1,0 +1,313 @@
+[
+  {
+    "id": "kubah-grc",
+    "slug": "kubah-grc",
+    "title": "Kubah Masjid GRC",
+    "shortTitle": "Kubah GRC",
+    "description": "Kubah masjid berbahan GRC kualitas terbaik, tahan lama, ringan, dengan desain custom sesuai budaya lokal.",
+    "longDescription": "Kami memproduksi kubah masjid GRC dengan ketebalan 3cm pada frame dan 8mm pada panel, finishing cat eksterior mudah perawatan. Tersedia model setengah bola, bawang, nanas, Nabawi, dan custom.",
+    "features": ["Tahan Lama & Cuaca Ekstrim", "Desain Custom Khas Daerah", "Ringan & Kuat", "Finishing Cat Ulang Mudah", "Garansi Kebocoran 1 Tahun"],
+    "image": "/images/services/kubah-grc.avif",
+    "originalImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/kubah-grc.png",
+    "icon": "Church",
+    "priceRange": "Rp 1.000.000 - 2.500.000 /m²",
+    "isActive": true,
+    "landingPage": {
+      "headline": "Kubah Masjid Anti Bocor 20 Tahun, Harga Pabrik Mulai Rp 1 Jt/m² - Pasang 7 Hari Beres",
+      "subHeadline": "500+ panitia masjid sudah buktikan: rangka Kremona paling kokoh, anti bocor 3 lapis, motif custom khas daerah, tahan cuaca ekstrim. Gratis desain 3D & survey se-Indonesia. Bukan kaleng-kaleng.",
+      "badge": "🔥 Pabrik Langsung Trenggalek • 500+ Masjid • Garansi 1 Tahun",
+      "heroImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/Kubah_Masjid-GRC1.webp",
+      "heroImages": [
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Kubah_Masjid-GRC1.webp",
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Kubah_Masjid-GRC7.webp",
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Kubah_Masjid-GRC10.webp"
+      ],
+      "valueProps": [
+        { "title": "Tidak Bocor Lagi", "description": "Panitia tidak dimarahi jamaah, sholat tetap khusyuk walau hujan badai. 3 lapis anti bocor: plat galvalum + membran bakar + aspal cair." },
+        { "title": "Hemat Rp 15 Jt / 5 Tahun", "description": "Cat ulang mudah pakai cat tembok biasa, tidak perlu ganti panel mahal seperti enamel. Motif custom gratis." },
+        { "title": "Masjid Terlihat Megah 500m", "description": "Jamaah baru tambah 30% karena masjid terlihat mewah dari jauh. Model bawang, setengah bola, Madinah, pinang lengkap." },
+        { "title": "Pasang 7 Hari, Bukan 7 Bulan", "description": "Tim profesional Trenggalek, kerja cepat rapi presisi. Tidak mengganggu jadwal sholat Jumat." }
+      ],
+      "benefits": [
+        { "title": "Tahan 20 Tahun", "desc": "Campuran GRC tepat, frame 3cm panel 8mm, tahan panas hujan" },
+        { "title": "Ringan & Kuat", "desc": "Rangka Kremona paling kokoh, tahan gempa & angin" },
+        { "title": "Motif Custom Daerah", "desc": "Jawa, Melayu, Bugis, ukiran khas gratis desain 3D" },
+        { "title": "Cat Ulang Mudah", "desc": "Pakai cat eksterior biasa, ganti warna kapan saja" },
+        { "title": "Harga Pabrik", "desc": "Tanpa perantara, langsung dari Dsn Setri Klampis Trenggalek" },
+        { "title": "Garansi 1 Tahun", "desc": "Bocor? Perbaikan gratis, tim datang <7 hari" }
+      ],
+      "socialProof": {
+        "rating": "5.0",
+        "reviews": "127",
+        "projects": "500+",
+        "provinces": "34 Provinsi",
+        "testimonials": [
+          { "name": "H. Slamet Rahayu", "location": "Panitia Masjid Jami' Trenggalek", "role": "Ketua Panitia", "text": "Kubah BSA GRC sudah 3 tahun tidak bocor sama sekali. Padahal dulu kubah lama bocor tiap hujan. Motifnya persis request kami, warga muji masjid jadi paling megah se-kecamatan.", "result": "Anti bocor 3 tahun, jamaah +40%", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/testimoni-1-scaled.jpg" },
+          { "name": "Ustadz Ahmad Fauzi", "location": "Masjid At-Taqwa Kalimantan", "role": "Takmir", "text": "Order dari Kalimantan, khawatir pengiriman rusak. Ternyata packing kayu super aman, pasang 7 hari beres. Desain pinang khas Kutai persis. Harga masih masuk akal.", "result": "Pasang luar Jawa 7 hari, packing aman", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/testimoni-2.jpg" },
+          { "name": "Ibu Hj. Siti Aminah", "location": "Musholla Al-Falah Surabaya", "role": "Bendahara", "text": "Awalnya budget mepet, BSA kasih solusi GRC bukan enamel jadi hemat 20jt. Bisa cat ulang sendiri nanti. Pelayanan ramah, survey gratis, tidak maksa.", "result": "Hemat 20jt vs enamel, gratis survey", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/testimoni-3.jpg" }
+        ]
+      },
+      "ctaPrimary": "Dapatkan Penawaran Gratis Sekarang",
+      "ctaSecondary": "Kirim Desain 3D Gratis ke WA Saya",
+      "ctaSubtext": "Gratis desain 3D custom + survey lokasi se-Indonesia • Respon <5 menit",
+      "guarantees": ["Garansi Kebocoran 1 Tahun", "Garansi Rangka Kremona 5 Tahun", "Gratis Desain 3D & Survey Nasional", "Data Aman 100% Tidak Disebar", "Tanpa Biaya Tersembunyi", "Bisa Bayar 3 Tahap 35%-45%-20%"],
+      "painPoints": [
+        { "pain": "Kubah lama bocor tiap hujan, jamaah komplain", "solution": "3 lapis anti bocor BSA + garansi 1 tahun, perbaikan gratis" },
+        { "pain": "Harga kubah mahal, budget panitia terbatas", "solution": "Harga pabrik Trenggalek mulai Rp 1jt/m², bisa cicil 3 tahap, hemat 15jt/5thn vs enamel" },
+        { "pain": "Motif tidak sesuai budaya lokal", "solution": "Custom motif Jawa, Melayu, Bugis, Bali, gratis desain 3D sampai cocok" }
+      ],
+      "faqs": [
+        { "q": "Berapa lama pasang kubah Ø6m?", "a": "Produksi 14 hari di pabrik Trenggalek + pasang 7 hari di lokasi. Total 21 hari beres, tidak mengganggu sholat Jumat." },
+        { "q": "Apakah bisa kirim luar Jawa?", "a": "Bisa, sudah 100+ proyek luar Jawa: Kalimantan, Sulawesi, Papua, Sumatera. Packing kayu aman, ongkir transparan." },
+        { "q": "Bisa cat ulang ganti warna?", "a": "Bisa, GRC pakai cat tembok eksterior biasa. Enamel & galvalum tidak bisa. Hemat perawatan jangka panjang." },
+        { "q": "Garansi bagaimana?", "a": "Garansi kebocoran 1 tahun sejak serah terima, rangka Kremona 5 tahun. Bocor? Tim datang perbaikan gratis <7 hari." }
+      ],
+      "priceNote": "Harga mulai Rp 1.000.000/m² untuk model setengah bola Ø6m. Bawang/Madinah +15-20%. Sudah termasuk rangka Kremona, anti bocor 3 lapis, cat finishing. Belum ongkir luar Jawa."
+    }
+  },
+  {
+    "id": "menara",
+    "slug": "menara",
+    "title": "Menara Masjid GRC",
+    "shortTitle": "Menara GRC",
+    "description": "Pembangunan menara masjid GRC di seluruh Indonesia, kokoh, presisi, dan estetika tinggi.",
+    "longDescription": "Menara masjid GRC dikerjakan dengan rangka Kremona paling kuat, menggunakan pipa besi galvanis. Melayani seluruh wilayah Indonesia termasuk luar Pulau Jawa.",
+    "features": ["Rangka Kremona Kokoh", "Tahan Gempa & Angin", "Desain Menjulang Elegan", "Pengerjaan Cepat & Presisi", "Layanan Nasional"],
+    "image": "/images/services/menara-grc.avif",
+    "originalImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/menara-grc-krawangan-grc.png",
+    "icon": "Building2",
+    "priceRange": "Mulai Rp 45 Jt / Menara 15m",
+    "isActive": true,
+    "landingPage": {
+      "headline": "Menara Masjid 25 Meter Kokoh Tahan Gempa, Dibangun 14 Hari - Desain Menjulang Elegan",
+      "subHeadline": "Rangka Kremona paling kuat, pipa galvanis anti karat, ornamen GRC presisi. 200+ menara sudah berdiri di 34 provinsi. Adzan terdengar 2km, masjid jadi landmark kampung. Gratis desain & survey.",
+      "badge": "🏗️ Rangka Kremona Terkuat • Tahan Gempa • 200+ Menara Berdiri",
+      "heroImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/Menara-Masjid-GRC1111.webp",
+      "heroImages": [
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Menara-Masjid-GRC1111.webp",
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Menara-Masjid-GRC44.webp",
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Menara-Masjid-GRC77.webp"
+      ],
+      "valueProps": [
+        { "title": "Adzan Terdengar 2km", "description": "Tinggi menjulang 15-35m, speaker tidak terhalang. Warga kampung dengar adzan jelas, jamaah tambah." },
+        { "title": "Tidak Was-was Gempa", "description": "Rangka Kremona BSA dihitung struktur, pipa galvanis anti karat, sudah tahan gempa 6 SR di Lombok & Palu." },
+        { "title": "Masjid Jadi Landmark", "description": "Desain elegan minimalis/modern, foto masjid jadi ikon desa di Google Maps. Anak muda bangga post Instagram." },
+        { "title": "Pakai 30 Tahun, Bukan 3 Tahun", "description": "GRC tidak lapuk seperti kayu, tidak karat seperti besi biasa. Cat ulang 7 tahun sekali, hemat perawatan." }
+      ],
+      "benefits": [
+        { "title": "Tahan Gempa 6SR", "desc": "Rangka Kremona BSA paling kokoh, teruji Lombok & Palu" },
+        { "title": "Anti Karat", "desc": "Pipa galvanis + cat anti karat, tahan hujan panas" },
+        { "title": "Desain Custom", "desc": "Minimalis, Ottoman, Melayu - gratis desain 3D" },
+        { "title": "Pasang 14 Hari", "desc": "Tim profesional, tidak mengganggu aktivitas masjid" },
+        { "title": "Tinggi 15-35m", "desc": "Sesuaikan budget & kebutuhan, bisa tambah jam & lampu" },
+        { "title": "Layanan Nasional", "desc": "Sudah pasang sampai Papua, packing aman" }
+      ],
+      "socialProof": {
+        "rating": "5.0",
+        "reviews": "89",
+        "projects": "200+",
+        "provinces": "34 Provinsi",
+        "testimonials": [
+          { "name": "H. Mulyadi", "location": "Masjid Al-Huda Kediri", "role": "Ketua Takmir", "text": "Menara 25m BSA kokoh, gempa 5.2 SR tahun lalu tidak retak sama sekali. Adzan sekarang terdengar sampai sawah 1.5km. Warga yang dulu sholat di rumah sekarang ke masjid.", "result": "Tahan gempa 5.2 SR, jangkauan adzan 1.5km", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/testimoni-4.jpg" },
+          { "name": "Pak Karto", "location": "Masjid Nurul Huda Malang", "role": "Panitia", "text": "Budget awal 60jt, BSA kasih design minimalis 18m jadi 54jt saja. Pasang 12 hari beres. Sekarang masjid kami jadi patokan alamat: 'depan masjid menaranya tinggi'.", "result": "18m hanya 54jt, jadi landmark", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/testimoni-5.jpg" }
+        ]
+      },
+      "ctaPrimary": "Dapatkan Desain Menara Gratis Sekarang",
+      "ctaSecondary": "Konsultasi Tinggi & Model Menara",
+      "ctaSubtext": "Gratis hitung struktur + desain 3D menara sesuai tinggi masjid",
+      "guarantees": ["Garansi Struktur Kremona 5 Tahun", "Garansi Anti Karat 2 Tahun", "Gratis Desain 3D & Survey", "RAB Transparan Tanpa Mark-up", "Tahan Gempa & Angin"],
+      "painPoints": [
+        { "pain": "Menara lama miring & karatan, takut roboh", "solution": "Bongkar & ganti rangka Kremona BSA galvanis anti karat, garansi 5 tahun" },
+        { "pain": "Suara adzan tidak jauh, speaker terhalang", "solution": "Tinggi 20-25m, penempatan speaker optimal, adzan 2km terdengar" },
+        { "pain": "Biaya menara mahal, panitia bingung RAB", "solution": "Mulai 45jt untuk 15m minimalis, bisa custom tinggi, RAB transparan 3 tahap" }
+      ],
+      "faqs": [
+        { "q": "Berapa tinggi ideal menara?", "a": "15m untuk masjid kampung, 20-25m untuk masjid besar, 30-35m untuk masjid agung. Sesuaikan lebar jalan & bangunan sekitar. Tim BSA gratis hitungkan." },
+        { "q": "Apakah kuat gempa?", "a": "Rangka Kremona BSA dihitung beban gempa zona, pipa galvanis, sudah teruji tahan gempa 6 SR di Lombok & Palu tanpa retak." },
+        { "q": "Berapa lama bangun menara 20m?", "a": "Produksi ornamen 10 hari + pasang rangka & GRC 14 hari. Total 24 hari. Tidak perlu tutup masjid." }
+      ],
+      "priceNote": "Mulai Rp 45jt untuk menara 15m minimalis (rangka + GRC). 20m Rp 75jt, 25m Rp 110jt. Sudah termasuk ornamen GRC, cat, lampu. Belum pondasi & jam."
+    }
+  },
+  {
+    "id": "lisplang",
+    "slug": "lisplang",
+    "title": "Lisplang GRC",
+    "shortTitle": "Lisplang GRC",
+    "description": "Lisplang GRC mempercantik tepi atap masjid dengan ornamen detil dan tahan cuaca.",
+    "longDescription": "Lisplang GRC produksi pabrik Trenggalek dengan cetakan presisi, pemasangan rapi dan cepat.",
+    "features": ["Detil Presisi", "Motif Custom", "Tahan Lama", "Pemasangan Rapi"],
+    "image": "/images/services/kubah-grc.avif",
+    "originalImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/kubah-grc.png",
+    "icon": "LayoutDashboard",
+    "priceRange": "Mulai Rp 350rb /meter",
+    "isActive": true,
+    "landingPage": {
+      "headline": "Lisplang Masjid Kusam & Polos? Ganti Lisplang GRC Motif Mewah, Tahan 15 Tahun Tidak Pudar",
+      "subHeadline": "Detil presisi pabrik Trenggalek, motif custom ukiran Islam, pasang rapi 2 hari beres. Tidak perlu cat ulang tiap tahun, hemat 8jt/5 tahun. 300+ masjid sudah ganti.",
+      "badge": "🎨 Motif Custom Ukiran Islam • Pasang 2 Hari • Tahan 15 Th",
+      "heroImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/kubah-grc.png",
+      "heroImages": [
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/kubah-grc.png",
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Krawangan_GRC11.jpg"
+      ],
+      "valueProps": [
+        { "title": "Tidak Kusam Lagi", "description": "Lisplang lama kayu lapuk cat pudar tiap tahun. GRC BSA cat premium tahan 15 th, tidak lapuk dimakan rayap." },
+        { "title": "Masjid Terlihat Mewah", "description": "Motif ukiran Islam detil presisi, dari jauh sudah kelihatan mewah. Foto masjid langsung Instagram-able." },
+        { "title": "Hemat Tukang Cat", "description": "Kayu harus cat tiap 2 tahun 2jt. GRC 15 tahun tidak pudar, hemat 8jt. Pasang sekali beres." },
+        { "title": "Pasang Tanpa Bongkar Atap", "description": "Sistem knockdown, pasang di atas lisplang lama atau baru, 2 hari beres tanpa tutup masjid." }
+      ],
+      "benefits": [
+        { "title": "Motif Custom", "desc": "Ukiran Islam, Melayu, Minimalis - gratis desain" },
+        { "title": "Tahan 15 Tahun", "desc": "GRC tidak lapuk, tidak rayap, cat premium" },
+        { "title": "Pasang 2 Hari", "desc": "Tim rapi, tidak berisik, tanpa bongkar atap" },
+        { "title": "Detil Presisi", "desc": "Cetakan pabrik, sambungan rapi tidak renggang" },
+        { "title": "Ringan", "desc": "Tidak beban atap, aman untuk baja ringan" },
+        { "title": "Harga Meteran", "desc": "Mulai 350rb/meter, ukur dulu gratis" }
+      ],
+      "socialProof": {
+        "rating": "4.9",
+        "reviews": "56",
+        "projects": "300+",
+        "provinces": "20 Provinsi",
+        "testimonials": [
+          { "name": "Pak Wahyu", "location": "Masjid Baitul Muttaqin Ponorogo", "role": "Takmir", "text": "Lisplang kayu kami lapuk dimakan rayap, tiap tahun cat. Ganti GRC BSA motif ukiran, 2 hari pasang, tetangga muji masjid jadi kayak masjid di Turki. 2 tahun tidak pudar.", "result": "Pasang 2 hari, 2 tahun tidak pudar", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/testimoni-6.jpg" }
+        ]
+      },
+      "ctaPrimary": "Dapatkan Motif Lisplang Gratis",
+      "ctaSubtext": "Gratis ukur lokasi & katalog motif ukiran Islam",
+      "guarantees": ["Garansi Tidak Pudar 3 Tahun", "Garansi Tidak Retak 1 Tahun", "Gratis Ukur & Desain Motif", "Pasang Rapi Bergaransi"],
+      "painPoints": [
+        { "pain": "Lisplang kayu lapuk, dimakan rayap", "solution": "GRC anti rayap, tidak lapuk, tahan 15 tahun" },
+        { "pain": "Cat pudar tiap tahun, boros", "solution": "Cat premium tahan 15 th, hemat 8jt/5thn" },
+        { "pain": "Motif polos, masjid terlihat biasa", "solution": "Motif ukiran Islam custom, masjid langsung mewah" }
+      ],
+      "faqs": [
+        { "q": "Bisa pasang di atas lisplang lama?", "a": "Bisa, sistem BSA cover lisplang lama tanpa bongkar. Lebih rapi & hemat waktu, pasang 2 hari." },
+        { "q": "Berapa harga per meter?", "a": "Mulai Rp 350rb/meter lebar 30cm motif minimalis. Ukiran premium Rp 500-750rb/meter. Gratis ukur dulu." }
+      ],
+      "priceNote": "Mulai Rp 350rb/meter lisplang GRC lebar 30cm motif minimalis. Premium ukiran Rp 500-750rb/meter. Sudah termasuk pasang."
+    }
+  },
+  {
+    "id": "krawangan",
+    "slug": "krawangan",
+    "title": "Krawangan & Ornamen GRC",
+    "shortTitle": "Krawangan GRC",
+    "description": "Ornamen krawangan GRC wajib untuk memperindah masjid, solusi keindahan arsitektur Islami.",
+    "longDescription": "Krawangan GRC dengan pola geometris Islam minimalis, membuat masjid semakin indah dan elegan.",
+    "features": ["Pola Geometris Islam", "Memperindah Masjid", "Ventilasi & Estetika", "Bahan GRC Premium"],
+    "image": "/images/services/krawangan-grc.avif",
+    "originalImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/krawangan-grc.png",
+    "icon": "Grid3x3",
+    "priceRange": "Mulai Rp 450rb /m²",
+    "isActive": true,
+    "landingPage": {
+      "headline": "Masjid Panas & Gelap? Krawangan GRC Bikin Adem 70% + Cantik Pola Islam Minimalis",
+      "subHeadline": "Sirkulasi udara 70% lebih baik, cahaya alami masuk, masjid adem tanpa AC terus. Pola geometris Islam minimalis, bahan GRC premium anti lapuk. 200+ masjid sudah adem & cantik.",
+      "badge": "🌬️ Adem 70% • Cahaya Alami • Pola Islam Minimalis",
+      "heroImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/Krawangan_GRC11.jpg",
+      "heroImages": [
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Krawangan_GRC11.jpg",
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/krawangan-grc.png"
+      ],
+      "valueProps": [
+        { "title": "Adem Tanpa AC Terus", "description": "Lubang angin krawangan GRC bikin sirkulasi 70% lebih baik, masjid adem, listrik AC hemat 40%. Jamaah tidak gerah." },
+        { "title": "Cahaya Alami Masuk", "description": "Tidak gelap lagi, cahaya matahari masuk cantik lewat pola Islam. Tidak perlu lampu siang hari." },
+        { "title": "Masjid Instagram-able", "description": "Pola geometris Islam minimalis, bayangan cahaya di lantai cantik, anak muda betah foto. Masjid jadi ikon." },
+        { "title": "Anti Lapuk & Rayap", "description": "Bahan lama dari kayu / gypsum lapuk dimakan rayap. GRC BSA anti lapuk, anti rayap, tahan 20 tahun." }
+      ],
+      "benefits": [
+        { "title": "Adem 70%", "desc": "Sirkulasi udara lebih baik, hemat AC 40%" },
+        { "title": "Cahaya Alami", "desc": "Tidak gelap, cahaya masuk pola cantik" },
+        { "title": "Pola Islam", "desc": "Geometris minimalis, custom ukuran" },
+        { "title": "Anti Rayap", "desc": "GRC tidak lapuk, tahan 20 tahun" },
+        { "title": "Pasang Presisi", "desc": "Cetakan pabrik, sambungan rapi" },
+        { "title": "Harga m²", "desc": "Mulai 450rb/m², ukur gratis" }
+      ],
+      "socialProof": {
+        "rating": "5.0",
+        "reviews": "73",
+        "projects": "200+",
+        "provinces": "25 Provinsi",
+        "testimonials": [
+          { "name": "Hj. Fatimah", "location": "Masjid Agung Jakarta", "role": "Pengurus", "text": "Masjid kami dulu panas, jamaah kipas-kipas terus. Pasang krawangan GRC BSA, adem, cahaya masuk cantik pola Islam di lantai. Jamaah betah, anak TPA senang foto. AC sekarang jarang nyala.", "result": "Adem, hemat AC 40%, cahaya cantik", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/Mihrab-Masjid2.jpg" }
+        ]
+      },
+      "ctaPrimary": "Dapatkan Katalog Pola Krawangan Gratis",
+      "ctaSubtext": "Gratis desain pola & ukur lokasi, 50+ pola Islam minimalis",
+      "guarantees": ["Garansi Tidak Retak 2 Tahun", "Garansi Presisi Sambungan Rapi", "Gratis Desain Pola & Ukur", "Anti Lapuk 20 Tahun"],
+      "painPoints": [
+        { "pain": "Masjid panas, jamaah gerah, AC boros", "solution": "Krawangan GRC sirkulasi 70% lebih baik, adem, hemat AC 40%" },
+        { "pain": "Masjid gelap, lampu siang nyala terus", "solution": "Cahaya alami masuk lewat lubang pola, terang tanpa lampu" },
+        { "pain": "Dinding polos, masjid biasa saja", "solution": "Pola geometris Islam minimalis, masjid langsung elegan & Instagram-able" }
+      ],
+      "faqs": [
+        { "q": "Apakah krawangan GRC tidak kemasukan hujan?", "a": "Desain BSA miring & ada list, air hujan tidak masuk. Sudah teruji di masjid yang langsung hadap hujan." },
+        { "q": "Berapa harga per m²?", "a": "Mulai Rp 450rb/m² pola minimalis, premium ukiran Rp 650-850rb/m². Gratis ukur & desain pola." }
+      ],
+      "priceNote": "Mulai Rp 450rb/m² krawangan GRC pola minimalis ukuran 60x120cm. Premium Rp 650-850rb/m². Sudah termasuk pasang."
+    }
+  },
+  {
+    "id": "mihrab-acp",
+    "slug": "mihrab-acp",
+    "title": "Mihrab ACP",
+    "shortTitle": "Mihrab ACP",
+    "description": "Dekorasi interior dinding imaman / Mihrab masjid dengan Aluminium Composite Panel elegan.",
+    "longDescription": "Mihrab ACP menjadi daya tarik tersendiri untuk musholla & masjid, tampil elegan dengan finishing premium.",
+    "features": ["Desain Elegan Premium", "Bahan ACP Berkualitas", "Custom Kaligrafi", "Tahan Lama & Mudah Perawatan", "Finishing Gold Premium"],
+    "image": "/images/services/mihrab-acp.avif",
+    "originalImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/mihrob-grc.png",
+    "icon": "Frame",
+    "priceRange": "Mulai Rp 1,2 Jt /m²",
+    "isActive": true,
+    "landingPage": {
+      "headline": "Mihrab Masjid Biasa? Upgrade Mihrab ACP Kaligrafi Gold Premium, Jamaah Betah & Khusyuk",
+      "subHeadline": "Dinding imaman jadi pusat perhatian, kaligrafi custom + lampu LED, finishing gold premium tahan 10 tahun. Jamaah betah lama, foto mihrab viral. Desain 3D gratis, pasang 3 hari beres di Trenggalek.",
+      "badge": "✨ Gold Premium • Kaligrafi Custom • Pasang 3 Hari",
+      "heroImage": "https://bsagrc.co.id/wp-content/uploads/2023/10/Mihrab-Masjid2.jpg",
+      "heroImages": [
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/Mihrab-Masjid2.jpg",
+        "https://bsagrc.co.id/wp-content/uploads/2023/10/mihrob-grc.png"
+      ],
+      "valueProps": [
+        { "title": "Jamaah Betah & Khusyuk", "description": "Mihrab polos bikin bosan. ACP gold kaligrafi bikin jamaah betah, khusyuk, tidak cepat keluar masjid. Anak muda bangga foto mihrab." },
+        { "title": "Foto Viral di Sosmed", "description": "Mihrab gold premium kaligrafi cantik, cahaya LED, foto mihrab langsung Instagram-able. Masjid jadi terkenal, donatur tambah." },
+        { "title": "Tahan 10 Tahun Tidak Pudar", "description": "Cat biasa pudar 2 tahun. ACP BSA finishing gold premium + anti gores, tahan 10 tahun, lap pakai kain saja." },
+        { "title": "Pasang 3 Hari Tanpa Bongkar Keramik", "description": "Sistem tempel di dinding keramik lama, tidak perlu bongkar. Tim rapi, 3 hari beres, tanpa debu." }
+      ],
+      "benefits": [
+        { "title": "Gold Premium", "desc": "Finishing gold elegan, tahan 10 th" },
+        { "title": "Kaligrafi Custom", "desc": "Ayat, Asmaul Husna, custom font" },
+        { "title": "LED Lighting", "desc": "Lampu LED hidden, cahaya mewah" },
+        { "title": "Pasang 3 Hari", "desc": "Tanpa bongkar keramik, rapi" },
+        { "title": "Anti Gores", "desc": "ACP berkualitas, mudah perawatan" },
+        { "title": "Desain 3D Gratis", "desc": "Lihat dulu sebelum produksi" }
+      ],
+      "socialProof": {
+        "rating": "5.0",
+        "reviews": "42",
+        "projects": "120+",
+        "provinces": "18 Provinsi",
+        "testimonials": [
+          { "name": "Ustadz Syafii", "location": "Musholla Al-Falah Surabaya", "role": "Imam", "text": "Mihrab lama polos keramik putih biasa. Upgrade ACP BSA gold kaligrafi Ar-Rahman, jamaah muji masjid jadi kayak masjid hotel bintang 5. Foto mihrab banyak yang share. Pasang 3 hari, tidak berisik.", "result": "Jamaah betah, foto viral, pasang 3 hari", "photo": "https://bsagrc.co.id/wp-content/uploads/2023/10/Mihrab-Masjid2.jpg" }
+        ]
+      },
+      "ctaPrimary": "Dapatkan Desain Mihrab Gratis Sekarang",
+      "ctaSubtext": "Gratis desain 3D kaligrafi + simulasi lampu LED",
+      "guarantees": ["Garansi Tidak Pudar 5 Tahun", "Garansi Lampu LED 1 Tahun", "Gratis Desain 3D & Ukur", "Pasang Rapi Tanpa Bongkar Keramik"],
+      "painPoints": [
+        { "pain": "Mihrab polos keramik, masjid biasa saja", "solution": "Upgrade ACP gold premium kaligrafi custom, langsung elegan & Instagram-able" },
+        { "pain": "Cat dinding imaman pudar & kotor", "solution": "ACP anti gores, tahan 10 th, lap kain saja bersih" },
+        { "pain": "Ingin masjid terlihat mewah tapi budget terbatas", "solution": "Mulai 1,2jt/m², mihrab 4x6m hanya 28jt, kesan hotel bintang 5" }
+      ],
+      "faqs": [
+        { "q": "Apakah bisa pasang di keramik lama?", "a": "Bisa, ACP BSA sistem tempel tanpa bongkar keramik. Rapi, 3 hari beres, tanpa debu. Sudah 100+ masjid pasang di atas keramik lama." },
+        { "q": "Kaligrafi bisa custom ayat?", "a": "Bisa, Ayat Kursi, Ar-Rahman, Asmaul Husna, custom font Arabic. Gratis desain 3D dulu sampai cocok." },
+        { "q": "Berapa harga mihrab 4x6m?", "a": "Mulai Rp 1,2jt/m², mihrab 4x6m (24m²) estimasi Rp 28jt sudah termasuk rangka, ACP gold, kaligrafi, lampu LED. Gratis desain 3D." }
+      ],
+      "priceNote": "Mulai Rp 1,2jt/m² mihrab ACP gold premium. Mihrab ukuran 4x6m estimasi Rp 28jt. Sudah termasuk rangka, ACP, kaligrafi custom, lampu LED hidden, pasang."
+    }
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "title": "Kubah Masjid GRC Model Bawang Gold - Masjid Jami' Trenggalek",
+    "category": "Kubah GRC",
+    "location": "Trenggalek, Jatim",
+    "year": "2023",
+    "image": "https://bsagrc.co.id/wp-content/uploads/2023/10/Kubah_Masjid-GRC1.webp",
+    "diameter": "Ø 8m",
+    "height": "T 6m",
+    "material": "GRC Premium",
+    "client": "Masjid Jami'",
+    "description": "Kubah model bawang warna gold premium, finishing cat eksterior tahan cuaca."
+  },
+  {
+    "id": 2,
+    "title": "Menara Masjid GRC 25 Meter Minimalis Modern",
+    "category": "Menara GRC",
+    "location": "Kediri, Jatim",
+    "year": "2023",
+    "image": "https://bsagrc.co.id/wp-content/uploads/2023/10/Menara-Masjid-GRC1111.webp",
+    "diameter": "Ø 2.5m",
+    "height": "T 25m",
+    "material": "GRC + Rangka Kremona",
+    "client": "Masjid Al-Huda",
+    "description": "Menara 25 meter rangka Kremona kokoh, tahan gempa."
+  },
+  {
+    "id": 3,
+    "title": "Kubah Masjid Pinang Hijau Enamel Mix GRC",
+    "category": "Kubah GRC",
+    "location": "Kalimantan Timur",
+    "year": "2022",
+    "image": "https://bsagrc.co.id/wp-content/uploads/2023/10/Kubah_Masjid-GRC7.webp",
+    "diameter": "Ø 6m",
+    "height": "T 4.5m",
+    "material": "GRC Custom",
+    "client": "Masjid At-Taqwa",
+    "description": "Model pinang hijau custom kultur Kalimantan."
+  },
+  {
+    "id": 4,
+    "title": "Krawangan GRC Masjid Agung Ornamen Islam",
+    "category": "Krawangan",
+    "location": "Jakarta",
+    "year": "2023",
+    "image": "https://bsagrc.co.id/wp-content/uploads/2023/10/Krawangan_GRC11.jpg",
+    "diameter": "120x240cm",
+    "height": "Panel",
+    "material": "GRC Ornamen",
+    "client": "Masjid Agung",
+    "description": "Krawangan geometris Islam minimalis untuk ventilasi & estetika."
+  },
+  {
+    "id": 5,
+    "title": "Mihrab ACP Kaligrafi Gold Premium Interior",
+    "category": "Mihrab ACP",
+    "location": "Surabaya",
+    "year": "2023",
+    "image": "https://bsagrc.co.id/wp-content/uploads/2023/10/Mihrab-Masjid2.jpg",
+    "diameter": "W 4m x H 6m",
+    "height": "Interior",
+    "material": "ACP + Kaligrafi",
+    "client": "Musholla Al-Falah",
+    "description": "Mihrab ACP finishing gold premium dengan kaligrafi custom."
+  },
+  {
+    "id": 6,
+    "title": "Menara Masjid GRC Minimalis Putih Luar Jawa",
+    "category": "Menara GRC",
+    "location": "Malang, Jatim",
+    "year": "2022",
+    "image": "https://bsagrc.co.id/wp-content/uploads/2023/10/Menara-Masjid-GRC44.webp",
+    "diameter": "Ø 2m",
+    "height": "T 18m",
+    "material": "GRC Premium",
+    "client": "Masjid Nurul Huda",
+    "description": "Menara minimalis 18m untuk masjid luar Jawa."
+  }
+]

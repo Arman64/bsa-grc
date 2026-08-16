@@ -1,0 +1,33 @@
+{
+  "company": {
+    "name": "BSA GRC",
+    "fullName": "BSA Glassfibre Reinforced Concrete",
+    "tagline": "Kontraktor Kubah GRC, Menara GRC, Ornamen GRC Kualitas Terbaik",
+    "description": "Spesialis Kubah Masjid, Menara, & Ornamen GRC berpengalaman lebih dari 10 tahun. Produksi detil sesuai keinginan customer dengan tenaga professional.",
+    "whatsapp": "6281230469914",
+    "whatsappDisplay": "0812-3046-9914",
+    "phone": "081230469914",
+    "phoneDisplay": "0812-3046-9914",
+    "email": "info@bsagrc.co.id",
+    "address": "Dsn. Setri, Klampis, Wonorejo, Kec. Gandusari, Kabupaten Trenggalek, Jawa Timur",
+    "yearsExperience": 10,
+    "projectsCompleted": 500
+  },
+  "hero": {
+    "title": "Kontraktor Kubah GRC, Menara & Ornamen GRC Terbaik",
+    "subtitle": "Spesialis produksi kubah, menara, lisplang, krawangan GRC & Mihrab ACP. Pabrik profesional di Trenggalek dengan 500+ proyek selesai di seluruh Indonesia.",
+    "image": "https://bsagrc.co.id/wp-content/uploads/2023/11/kubah-grc-menara-grc-krawangan-grc.png",
+    "ctaPrimary": "Konsultasi Gratis Sekarang",
+    "ctaSecondary": "Lihat Portofolio"
+  },
+  "usp": [
+    { "title": "Tahan Lama", "description": "Proses produksi & campuran bahan tepat, ketahanan lama" },
+    { "title": "Harga Terjangkau", "description": "Hemat budget pengadaan kubah masjid kualitas terbaik" },
+    { "title": "Desain Kustom", "description": "Motif & warna dapat dikustom sesuai keinginan" },
+    { "title": "Tahan Cuaca", "description": "Pelapis anti bocor tepat, tahan cuaca ekstrim" }
+  ],
+  "seo": {
+    "siteUrl": "https://bsagrc.co.id",
+    "googleVerification": ""
+  }
+}

@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --maroon: 122 12 16;
+    --maroon-dark: 90 8 12;
+    --gold: 212 175 55;
+    --gold-dark: 184 147 47;
+    --background: 255 255 255;
+    --foreground: 31 31 31;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  /* Focus visible for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-gold-400 ring-offset-2;
+  }
+}
+
+@layer components {
+  /* Islamic Geometric Pattern - Minimalist Accent */
+  .islamic-pattern {
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(122,12,16,0.05) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  .islamic-pattern-gold {
+    background-image: 
+      linear-gradient(45deg, rgba(212,175,55,0.03) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(212,175,55,0.03) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(212,175,55,0.03) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(212,175,55,0.03) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
+
+  .gradient-maroon-soft {
+    background: linear-gradient(135deg, #7A0C10 0%, #680A0E 100%);
+  }
+
+  .gradient-gold-soft {
+    background: linear-gradient(135deg, #D4AF37 0%, #B8932F 100%);
+  }
+
+  .gradient-hero-soft {
+    background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(249,245,241,0.8) 100%);
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #D4AF37 0%, #B8932F 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Button Variants */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-maroon-500 px-6 py-3 text-sm font-semibold text-white shadow-maroon transition-all duration-300 hover:bg-maroon-600 hover:shadow-large hover:-translate-y-0.5 focus-visible:ring-maroon-500;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center rounded-lg bg-gold-400 px-6 py-3 text-sm font-semibold text-maroon-900 shadow-gold transition-all duration-300 hover:bg-gold-600 hover:shadow-large hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-lg border-2 border-maroon-500 bg-transparent px-6 py-3 text-sm font-semibold text-maroon-500 transition-all duration-300 hover:bg-maroon-500 hover:text-white;
+  }
+
+  /* Card */
+  .card-portfolio {
+    @apply relative overflow-hidden rounded-xl bg-white shadow-soft transition-all duration-500 hover:shadow-large hover:-translate-y-1;
+  }
+
+  /* Islamic Border Accent */
+  .islamic-border {
+    position: relative;
+  }
+  
+  .islamic-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7A0C10 0%, #D4AF37 50%, #7A0C10 100%);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-maroon-200 rounded-full hover:bg-maroon-300;
+  }
+}
+
+/* Performance: will-change for animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
