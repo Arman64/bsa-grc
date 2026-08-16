@@ -19,6 +19,11 @@ interface Settings {
  address: string;
  yearsExperience: number;
  projectsCompleted: number;
+ mapLat?: number;
+ mapLng?: number;
+ mapZoom?: number;
+ mapEmbedUrl?: string;
+ mapLink?: string;
  };
  hero: {
  title: string;
@@ -233,6 +238,66 @@ export default function AdminSettingsPage() {
    <div>
     <label className="text-sm font-semibold mb-1.5 block">Alamat Lengkap Pabrik</label>
     <textarea value={settings.company.address} onChange={(e) => setSettings({ ...settings, company: { ...settings.company, address: e.target.value } })} rows={2} className="w-full px-4 py-2.5 rounded-xl border text-sm resize-none" />
+   </div>
+
+   {/* Maps Koordinat - BARU */}
+   <div className="bg-gradient-to-br from-blue-50 to-green-50 border border-blue-100 rounded-2xl p-5 space-y-4">
+    <h4 className="font-bold text-sm flex items-center gap-2">
+     <span className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center">📍</span>
+     Lokasi Maps Kantor - Halaman Kontak
+    </h4>
+    <p className="text-xs text-muted-foreground">Atur titik koordinat maps yang tampil di halaman kontak. Buka Google Maps, klik kanan di lokasi pabrik → Copy koordinat.</p>
+
+    <div className="grid grid-cols-3 gap-3">
+     <div>
+      <label className="text-[11px] font-bold mb-1 block">Latitude (Lat)</label>
+      <input type="number" step="any" value={settings.company.mapLat || -8.129491} onChange={(e) => setSettings({ ...settings, company: { ...settings.company, mapLat: parseFloat(e.target.value) } })} placeholder="-8.129491" className="w-full px-3 py-2 rounded-xl border text-sm font-mono" />
+     </div>
+     <div>
+      <label className="text-[11px] font-bold mb-1 block">Longitude (Lng)</label>
+      <input type="number" step="any" value={settings.company.mapLng || 111.721688} onChange={(e) => setSettings({ ...settings, company: { ...settings.company, mapLng: parseFloat(e.target.value) } })} placeholder="111.721688" className="w-full px-3 py-2 rounded-xl border text-sm font-mono" />
+     </div>
+     <div>
+      <label className="text-[11px] font-bold mb-1 block">Zoom (1-20)</label>
+      <input type="number" min="1" max="20" value={settings.company.mapZoom || 15} onChange={(e) => setSettings({ ...settings, company: { ...settings.company, mapZoom: parseInt(e.target.value) } })} placeholder="15" className="w-full px-3 py-2 rounded-xl border text-sm" />
+     </div>
+    </div>
+
+    <div>
+     <label className="text-[11px] font-bold mb-1 block">Custom Embed URL (Opsional) - Jika kosong, auto generate dari Lat/Lng</label>
+     <textarea value={settings.company.mapEmbedUrl || ""} onChange={(e) => setSettings({ ...settings, company: { ...settings.company, mapEmbedUrl: e.target.value } })} rows={2} placeholder="https://www.google.com/maps/embed?pb=... (kosongkan untuk auto generate)" className="w-full px-3 py-2 rounded-xl border text-xs font-mono resize-none" />
+    </div>
+
+    <div>
+     <label className="text-[11px] font-bold mb-1 block">Link Google Maps (Untuk tombol Buka di Google Maps)</label>
+     <input value={settings.company.mapLink || ""} onChange={(e) => setSettings({ ...settings, company: { ...settings.company, mapLink: e.target.value } })} placeholder="https://maps.google.com/?q=-8.129491,111.721688" className="w-full px-3 py-2 rounded-xl border text-xs" />
+    </div>
+
+    <div className="bg-white rounded-xl border p-3">
+     <p className="text-[11px] font-bold mb-2">Preview Maps:</p>
+     <div className="h-[200px] rounded-xl overflow-hidden border bg-muted">
+      <iframe
+       src={settings.company.mapEmbedUrl || `https://www.google.com/maps?q=${settings.company.mapLat || -8.129491},${settings.company.mapLng || 111.721688}&z=${settings.company.mapZoom || 15}&output=embed`}
+       width="100%"
+       height="100%"
+       style={{ border: 0 }}
+       loading="lazy"
+       title="Preview Maps BSA GRC"
+      />
+     </div>
+     <p className="text-[11px] text-muted-foreground mt-2">Lat: {settings.company.mapLat}, Lng: {settings.company.mapLng}, Zoom: {settings.company.mapZoom}</p>
+    </div>
+
+    <div className="bg-white/70 rounded-xl p-3 border border-dashed text-[11px] text-muted-foreground">
+     <p className="font-semibold text-foreground">Cara dapatkan koordinat:</p>
+     <ol className="list-decimal pl-4 mt-1 space-y-1">
+      <li>Buka Google Maps di browser</li>
+      <li>Cari alamat pabrik: Dsn. Setri, Klampis, Wonorejo, Gandusari, Trenggalek</li>
+      <li>Klik kanan di titik lokasi pabrik → pilih koordinat → klik untuk copy</li>
+      <li>Paste Lat & Lng di atas, atur Zoom 14-16 untuk tampilan desa/kecamatan</li>
+      <li>Jika punya Embed URL dari Google Maps (Share → Embed), bisa paste di Custom Embed URL</li>
+     </ol>
+    </div>
    </div>
 
    <div className="grid grid-cols-3 gap-4">

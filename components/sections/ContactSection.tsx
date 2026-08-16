@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageCircle, AlertCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageCircle, AlertCircle, ExternalLink } from "lucide-react";
 import { COMPANY_INFO } from "@/lib/constants";
 import Button from "@/components/ui/Button";
 import type { ContactFormData } from "@/lib/validations";
@@ -15,11 +15,75 @@ interface FormErrors {
  message?: string;
 }
 
+interface MapSettings {
+ lat: number;
+ lng: number;
+ zoom: number;
+ embedUrl: string;
+ link: string;
+ address: string;
+}
+
 export default function ContactSection() {
  const [isSubmitting, setIsSubmitting] = useState(false);
  const [isSuccess, setIsSuccess] = useState(false);
  const [errors, setErrors] = useState<FormErrors>({});
  const [waLink, setWaLink] = useState<string>("");
+ const [company, setCompany] = useState<{
+  whatsapp: string;
+  whatsappDisplay: string;
+  whatsappLink: string;
+  phone: string;
+  phoneDisplay: string;
+  email: string;
+  address: string;
+ }>({
+  whatsapp: COMPANY_INFO.contact.whatsapp,
+  whatsappDisplay: COMPANY_INFO.contact.whatsappDisplay,
+  whatsappLink: COMPANY_INFO.contact.whatsappLink,
+  phone: COMPANY_INFO.contact.phone,
+  phoneDisplay: COMPANY_INFO.contact.whatsappDisplay,
+  email: COMPANY_INFO.contact.email,
+  address: COMPANY_INFO.address.full,
+ });
+ const [map, setMap] = useState<MapSettings>({
+  lat: -8.129491,
+  lng: 111.721688,
+  zoom: 15,
+  embedUrl: "",
+  link: "https://maps.google.com/?q=-8.129491,111.721688",
+  address: COMPANY_INFO.address.full,
+ });
+
+ useEffect(() => {
+  fetch("/api/settings", { cache: "no-store" })
+   .then((res) => res.json())
+   .then((json) => {
+    if (json.success && json.data?.company) {
+     const c = json.data.company;
+     setCompany({
+      whatsapp: c.whatsapp || COMPANY_INFO.contact.whatsapp,
+      whatsappDisplay: c.whatsappDisplay || COMPANY_INFO.contact.whatsappDisplay,
+      whatsappLink: `https://api.whatsapp.com/send?phone=${c.whatsapp || COMPANY_INFO.contact.whatsapp}`,
+      phone: c.phone || COMPANY_INFO.contact.phone,
+      phoneDisplay: c.phoneDisplay || COMPANY_INFO.contact.whatsappDisplay,
+      email: c.email || COMPANY_INFO.contact.email,
+      address: c.address || COMPANY_INFO.address.full,
+     });
+
+     // Map settings from company
+     setMap({
+      lat: c.mapLat || -8.129491,
+      lng: c.mapLng || 111.721688,
+      zoom: c.mapZoom || 15,
+      embedUrl: c.mapEmbedUrl || "",
+      link: c.mapLink || `https://maps.google.com/?q=${c.mapLat || -8.129491},${c.mapLng || 111.721688}`,
+      address: c.address || COMPANY_INFO.address.full,
+     });
+    }
+   })
+   .catch(() => {});
+ }, []);
 
  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
  e.preventDefault();

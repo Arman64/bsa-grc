@@ -123,6 +123,11 @@ export interface CompanySettings {
     address: string;
     yearsExperience: number;
     projectsCompleted: number;
+    mapLat?: number;
+    mapLng?: number;
+    mapZoom?: number;
+    mapEmbedUrl?: string;
+    mapLink?: string;
   };
   hero: {
     title: string;
@@ -817,6 +822,11 @@ export function getSettingsDataSync(): CompanySettings {
       address: "Trenggalek, Jatim",
       yearsExperience: 10,
       projectsCompleted: 500,
+      mapLat: -8.129491,
+      mapLng: 111.721688,
+      mapZoom: 14,
+      mapEmbedUrl: "",
+      mapLink: "",
     },
     hero: { title: "Kontraktor Kubah GRC Terbaik", subtitle: "Spesialis kubah masjid", image: "/images/services/hero.avif", ctaPrimary: "Konsultasi Gratis", ctaSecondary: "Portofolio" },
     usp: [],
