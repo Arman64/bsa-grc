@@ -10,6 +10,7 @@ export interface PortfolioItem {
   location: string;
   year: string;
   image: string;
+  images?: string[];
   diameter?: string;
   height?: string;
   material?: string;
@@ -150,7 +151,7 @@ function ensureDb() {
   return db;
 }
 
-// ========== PORTFOLIO - Neon Only ==========
+// ========== PORTFOLIO - Neon Only with Carousel Images ==========
 export async function getPortfolioData(): Promise<PortfolioItem[]> {
   try {
     const database = ensureDb();
@@ -163,6 +164,7 @@ export async function getPortfolioData(): Promise<PortfolioItem[]> {
       location: r.location || "Trenggalek, Jatim",
       year: r.year || new Date().getFullYear().toString(),
       image: r.image || "",
+      images: (r.images as string[]) || [],
       diameter: r.diameter || undefined,
       height: r.height || undefined,
       material: r.material || undefined,
@@ -187,6 +189,7 @@ export async function getPortfolioById(id: number): Promise<PortfolioItem | unde
     location: r.location || "",
     year: r.year || "",
     image: r.image || "",
+    images: (r.images as string[]) || [],
     diameter: r.diameter || undefined,
     client: r.client || undefined,
     description: r.description || undefined,
@@ -204,6 +207,7 @@ export async function createPortfolio(data: Omit<PortfolioItem, "id">): Promise<
       location: data.location,
       year: data.year,
       image: data.image,
+      images: (data.images as any) || [],
       diameter: data.diameter || null,
       height: data.height || null,
       material: data.material || null,
@@ -220,6 +224,7 @@ export async function createPortfolio(data: Omit<PortfolioItem, "id">): Promise<
     location: inserted.location || "",
     year: inserted.year || "",
     image: inserted.image || "",
+    images: (inserted.images as string[]) || [],
     diameter: inserted.diameter || undefined,
     client: inserted.client || undefined,
   };
@@ -235,6 +240,7 @@ export async function updatePortfolio(id: number, data: Partial<PortfolioItem>):
       location: data.location,
       year: data.year,
       image: data.image,
+      images: data.images as any,
       diameter: data.diameter,
       height: data.height,
       material: data.material,
@@ -253,6 +259,7 @@ export async function updatePortfolio(id: number, data: Partial<PortfolioItem>):
     location: updated.location || "",
     year: updated.year || "",
     image: updated.image || "",
+    images: (updated.images as string[]) || [],
   };
 }
 
@@ -790,6 +797,185 @@ export async function deleteFaq(id: number): Promise<void> {
   const { faqs } = await import("./schema");
   const database = ensureDb();
   await database.delete(faqs).where(eq(faqs.id, id)).execute();
+}
+
+// ========== PAGE SETTINGS - Neon Only ==========
+export interface PageSettingsItem {
+  id: number;
+  slug: string;
+  title: string;
+  description?: string;
+  sections: any;
+  seoTitle?: string;
+  seoDescription?: string;
+  isActive: boolean;
+}
+
+export async function getPageSettingsData(): Promise<PageSettingsItem[]> {
+  try {
+    const { pageSettings } = await import("./schema");
+    const database = ensureDb();
+    const rows = await database.select().from(pageSettings).orderBy(pageSettings.slug).execute();
+    return rows.map((r) => ({
+      id: r.id,
+      slug: r.slug,
+      title: r.title,
+      description: r.description || undefined,
+      sections: r.sections as any,
+      seoTitle: r.seoTitle || undefined,
+      seoDescription: r.seoDescription || undefined,
+      isActive: r.isActive ?? true,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function getPageSettingsBySlug(slug: string): Promise<PageSettingsItem | undefined> {
+  try {
+    const { pageSettings } = await import("./schema");
+    const database = ensureDb();
+    const rows = await database.select().from(pageSettings).where(eq(pageSettings.slug, slug)).execute();
+    if (rows.length === 0) return undefined;
+    const r = rows[0];
+    return {
+      id: r.id,
+      slug: r.slug,
+      title: r.title,
+      description: r.description || undefined,
+      sections: r.sections as any,
+      seoTitle: r.seoTitle || undefined,
+      seoDescription: r.seoDescription || undefined,
+      isActive: r.isActive ?? true,
+    };
+  } catch {
+    return undefined;
+  }
+}
+
+export async function createPageSettings(data: Omit<PageSettingsItem, "id">): Promise<PageSettingsItem> {
+  const { pageSettings } = await import("./schema");
+  const database = ensureDb();
+  const [inserted] = await database.insert(pageSettings).values({
+    slug: data.slug,
+    title: data.title,
+    description: data.description || null,
+    sections: data.sections as any,
+    seoTitle: data.seoTitle || null,
+    seoDescription: data.seoDescription || null,
+    isActive: data.isActive,
+  }).returning().execute();
+  return {
+    id: inserted.id,
+    slug: inserted.slug,
+    title: inserted.title,
+    description: inserted.description || undefined,
+    sections: inserted.sections as any,
+    seoTitle: inserted.seoTitle || undefined,
+    seoDescription: inserted.seoDescription || undefined,
+    isActive: inserted.isActive ?? true,
+  };
+}
+
+export async function updatePageSettings(id: number, data: Partial<PageSettingsItem>): Promise<PageSettingsItem> {
+  const { pageSettings } = await import("./schema");
+  const database = ensureDb();
+  const [updated] = await database.update(pageSettings).set({
+    slug: data.slug,
+    title: data.title,
+    description: data.description,
+    sections: data.sections as any,
+    seoTitle: data.seoTitle,
+    seoDescription: data.seoDescription,
+    isActive: data.isActive,
+  }).where(eq(pageSettings.id, id)).returning().execute();
+  if (!updated) throw new Error("Page settings tidak ditemukan");
+  return {
+    id: updated.id,
+    slug: updated.slug,
+    title: updated.title,
+    description: updated.description || undefined,
+    sections: updated.sections as any,
+    seoTitle: updated.seoTitle || undefined,
+    seoDescription: updated.seoDescription || undefined,
+    isActive: updated.isActive ?? true,
+  };
+}
+
+export async function deletePageSettings(id: number): Promise<void> {
+  const { pageSettings } = await import("./schema");
+  const database = ensureDb();
+  await database.delete(pageSettings).where(eq(pageSettings.id, id)).execute();
+}
+
+// ========== MEDIA LIBRARY - Neon Only ==========
+export interface MediaItem {
+  id: number;
+  url: string;
+  fileName: string;
+  originalName?: string;
+  size: number;
+  type: string;
+  folder: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+}
+
+export async function getMediaData(): Promise<MediaItem[]> {
+  try {
+    const { media } = await import("./schema");
+    const database = ensureDb();
+    const rows = await database.select().from(media).orderBy(desc(media.createdAt)).execute();
+    return rows.map((r) => ({
+      id: r.id,
+      url: r.url,
+      fileName: r.fileName,
+      originalName: r.originalName || undefined,
+      size: r.size,
+      type: r.type,
+      folder: r.folder || "general",
+      alt: r.alt || undefined,
+      width: r.width || undefined,
+      height: r.height || undefined,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function createMedia(data: Omit<MediaItem, "id">): Promise<MediaItem> {
+  const { media } = await import("./schema");
+  const database = ensureDb();
+  const [inserted] = await database.insert(media).values({
+    url: data.url,
+    fileName: data.fileName,
+    originalName: data.originalName || null,
+    size: data.size,
+    type: data.type,
+    folder: data.folder,
+    alt: data.alt || null,
+    width: data.width || null,
+    height: data.height || null,
+  }).returning().execute();
+  return {
+    id: inserted.id,
+    url: inserted.url,
+    fileName: inserted.fileName,
+    originalName: inserted.originalName || undefined,
+    size: inserted.size,
+    type: inserted.type,
+    folder: inserted.folder || "general",
+    alt: inserted.alt || undefined,
+    width: inserted.width || undefined,
+    height: inserted.height || undefined,
+  };
+}
+
+export async function deleteMedia(id: number): Promise<void> {
+  const { media } = await import("./schema");
+  const database = ensureDb();
+  await database.delete(media).where(eq(media.id, id)).execute();
 }
 
 // Sync versions deprecated - kept for backward compat but now call async and throw if used in server without await

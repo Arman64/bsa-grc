@@ -4,17 +4,19 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import { LayoutDashboard, Images, Briefcase, Settings, LogOut, Menu, X, Home, FileText, Building2, BookOpen, Star, HelpCircle } from "lucide-react";
+import { LayoutDashboard, Images, Briefcase, Settings, LogOut, Menu, X, Home, FileText, Building2, BookOpen, Star, HelpCircle, Layers, Image as ImageIcon } from "lucide-react";
 import { COMPANY_INFO } from "@/lib/constants";
 
 const menuItems = [
- { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
- { label: "Portofolio", href: "/admin/portfolio", icon: Images, badge: "Gambar" },
- { label: "Layanan", href: "/admin/services", icon: Briefcase, badge: "5 Layanan" },
- { label: "Blog Artikel", href: "/admin/blog", icon: BookOpen, badge: "SEO + MCP" },
- { label: "Testimoni", href: "/admin/testimonials", icon: Star, badge: "Sosial Proof" },
- { label: "FAQ", href: "/admin/faqs", icon: HelpCircle, badge: "Tanya Jawab" },
- { label: "Pengaturan", href: "/admin/settings", icon: Settings, badge: "Teks & Kontak" },
+  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { label: "Halaman", href: "/admin/pages", icon: Layers, badge: "Edit Teks & Gambar" },
+  { label: "Media Library", href: "/admin/media", icon: ImageIcon, badge: "Kelola Gambar" },
+  { label: "Portofolio", href: "/admin/portfolio", icon: Images, badge: "Gambar" },
+  { label: "Layanan", href: "/admin/services", icon: Briefcase, badge: "5 Layanan" },
+  { label: "Blog Artikel", href: "/admin/blog", icon: BookOpen, badge: "SEO + MCP" },
+  { label: "Testimoni", href: "/admin/testimonials", icon: Star, badge: "Sosial Proof" },
+  { label: "FAQ", href: "/admin/faqs", icon: HelpCircle, badge: "Tanya Jawab" },
+  { label: "Pengaturan", href: "/admin/settings", icon: Settings, badge: "Teks & Kontak" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
