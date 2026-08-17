@@ -138,9 +138,27 @@ export default function AdminPagesPage() {
   };
 
   const handleEdit = (page: PageSettings) => {
+    // Merge existing DB sections with default complete sections for that slug
+    // So admin shows all components that exist in public page, not just 1 section
+    const defaults = getDefaultSections(page.slug);
+    const mergedSections = { ...defaults, ...(page.sections || {}) };
+    // Deep merge: for each section in defaults, merge fields
+    for (const key of Object.keys(defaults)) {
+      if (typeof defaults[key] === 'object' && !Array.isArray(defaults[key]) && page.sections && page.sections[key]) {
+        mergedSections[key] = { ...defaults[key], ...page.sections[key] };
+      }
+    }
     setEditing(page);
-    setForm(page);
+    setForm({ ...page, sections: mergedSections });
     setShowModal(true);
+  };
+
+  const handleLoadFullTemplate = () => {
+    if (!form.slug) return;
+    const full = getDefaultSections(form.slug);
+    if (confirm(`Load template lengkap untuk halaman ${form.slug} dengan ${Object.keys(full).length} sections (hero, stats, about, dll)? Data saat ini akan digabung, field yang kosong akan terisi default.`)) {
+      setForm({ ...form, sections: { ...full, ...(form.sections || {}) } });
+    }
   };
 
   const handleDelete = async (id: number) => {
@@ -387,11 +405,15 @@ export default function AdminPagesPage() {
             <div className="absolute inset-0 bg-black/50" onClick={() => setShowModal(false)} />
             <div className="relative bg-white rounded-2xl shadow-large w-full max-w-5xl max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white z-10">
-                <div>
+                <div className="flex-1">
                   <h3 className="font-bold text-lg">{editing ? "Edit" : "Tambah"} Halaman - {form.slug} <span className="text-xs bg-gold-50 border border-gold-200 px-2 py-1 rounded-full ml-2">{Object.keys(form.sections || {}).length} sections</span></h3>
                   <p className="text-xs text-muted-foreground mt-1">Edit tiap teks & gambar sesuai komponen di halaman public /{form.slug}. Perubahan langsung live di Neon DB.</p>
+                  <div className="mt-2 flex gap-2">
+                    <span className="text-[11px] text-muted-foreground">Komponen public: {form.slug === 'beranda' ? 'hero, stats, about, layanan, portofolio, testimoni, FAQ, CTA' : form.slug === 'profil' ? 'hero, stats, about, visi, misi, nilai, CTA' : 'hero, content, CTA'} • </span>
+                    <button type="button" onClick={handleLoadFullTemplate} className="text-[11px] bg-maroon-50 border border-maroon-100 text-maroon-700 px-2 py-0.5 rounded-full hover:bg-maroon-100">🔄 Load Template Lengkap ({Object.keys(getDefaultSections(form.slug || 'beranda')).length} sections)</button>
+                  </div>
                 </div>
-                <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-full bg-muted flex items-center justify-center"><X className="w-4 h-4" /></button>
+                <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-full bg-muted flex items-center justify-center ml-4"><X className="w-4 h-4" /></button>
               </div>
               <form onSubmit={handleSubmit} className="p-6 space-y-6">
                 <div className="grid grid-cols-2 gap-4">
