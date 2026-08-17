@@ -1,15 +1,17 @@
 import { pgTable, serial, varchar, text, boolean, integer, timestamp, jsonb } from "drizzle-orm/pg-core";
 
-// Portfolio - Kubah, Menara, Krawangan projects - NOW WITH MULTIPLE IMAGES FOR CAROUSEL
-export const portfolios = pgTable("portfolios", {
+// Use bsa_ prefix to avoid collision with other apps sharing same Neon DB
+// Previously tables like settings, media, leads collided with key/value schema from other apps
+
+export const portfolios = pgTable("bsa_portfolios", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 500 }).notNull(),
   slug: varchar("slug", { length: 500 }),
   category: varchar("category", { length: 100 }).notNull(),
   location: varchar("location", { length: 200 }).notNull(),
   year: varchar("year", { length: 20 }).notNull(),
-  image: text("image").notNull(), // main cover
-  images: jsonb("images").$type<string[]>().default([]), // gallery for carousel - NEW
+  image: text("image").notNull(),
+  images: jsonb("images").$type<string[]>().default([]),
   diameter: varchar("diameter", { length: 100 }),
   height: varchar("height", { length: 100 }),
   material: varchar("material", { length: 200 }),
@@ -19,8 +21,7 @@ export const portfolios = pgTable("portfolios", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Services - 5 layanan BSA GRC including landing page JSON
-export const services = pgTable("services", {
+export const services = pgTable("bsa_services", {
   id: varchar("id", { length: 100 }).primaryKey(),
   slug: varchar("slug", { length: 100 }).notNull().unique(),
   title: varchar("title", { length: 300 }).notNull(),
@@ -38,8 +39,7 @@ export const services = pgTable("services", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Settings - single row id=1, company, hero, usp, seo as JSON
-export const settings = pgTable("settings", {
+export const settings = pgTable("bsa_settings", {
   id: serial("id").primaryKey(),
   company: jsonb("company").$type<any>().notNull(),
   hero: jsonb("hero").$type<any>().notNull(),
@@ -48,8 +48,7 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Blogs - SEO friendly articles
-export const blogs = pgTable("blogs", {
+export const blogs = pgTable("bsa_blogs", {
   id: serial("id").primaryKey(),
   slug: varchar("slug", { length: 500 }).notNull().unique(),
   title: varchar("title", { length: 500 }).notNull(),
@@ -69,8 +68,7 @@ export const blogs = pgTable("blogs", {
   readingTime: integer("reading_time").default(5),
 });
 
-// Leads - from contact form & landing page ads
-export const leads = pgTable("leads", {
+export const leads = pgTable("bsa_leads", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 200 }).notNull(),
   phone: varchar("phone", { length: 50 }).notNull(),
@@ -84,8 +82,7 @@ export const leads = pgTable("leads", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Testimonials
-export const testimonials = pgTable("testimonials", {
+export const testimonials = pgTable("bsa_testimonials", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 200 }).notNull(),
   location: varchar("location", { length: 300 }).notNull(),
@@ -100,8 +97,7 @@ export const testimonials = pgTable("testimonials", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// FAQs
-export const faqs = pgTable("faqs", {
+export const faqs = pgTable("bsa_faqs", {
   id: serial("id").primaryKey(),
   question: varchar("question", { length: 500 }).notNull(),
   answer: text("answer").notNull(),
@@ -112,13 +108,12 @@ export const faqs = pgTable("faqs", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Page Settings - NEW: For editing each page's texts & images (beranda, profil, etc)
-export const pageSettings = pgTable("page_settings", {
+export const pageSettings = pgTable("bsa_page_settings", {
   id: serial("id").primaryKey(),
-  slug: varchar("slug", { length: 100 }).notNull().unique(), // beranda, profil, layanan, kontak, etc
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
   title: varchar("title", { length: 300 }).notNull(),
   description: text("description"),
-  sections: jsonb("sections").$type<any>().notNull(), // flexible JSON for all sections texts & images
+  sections: jsonb("sections").$type<any>().notNull(),
   seoTitle: varchar("seo_title", { length: 500 }),
   seoDescription: text("seo_description"),
   isActive: boolean("is_active").default(true).notNull(),
@@ -126,14 +121,13 @@ export const pageSettings = pgTable("page_settings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Media Library - NEW: Like WordPress media
-export const media = pgTable("media", {
+export const media = pgTable("bsa_media", {
   id: serial("id").primaryKey(),
   url: text("url").notNull(),
   fileName: varchar("file_name", { length: 300 }).notNull(),
   originalName: varchar("original_name", { length: 300 }),
-  size: integer("size").notNull(), // bytes
-  type: varchar("type", { length: 100 }).notNull(), // image/avif, image/jpeg, etc
+  size: integer("size").notNull(),
+  type: varchar("type", { length: 100 }).notNull(),
   folder: varchar("folder", { length: 100 }).default("general"),
   alt: varchar("alt", { length: 500 }),
   width: integer("width"),

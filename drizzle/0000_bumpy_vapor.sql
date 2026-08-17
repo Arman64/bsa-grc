@@ -1,4 +1,4 @@
-CREATE TABLE "blogs" (
+CREATE TABLE "bsa_blogs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"slug" varchar(500) NOT NULL,
 	"title" varchar(500) NOT NULL,
@@ -16,10 +16,10 @@ CREATE TABLE "blogs" (
 	"is_published" boolean DEFAULT true NOT NULL,
 	"views" integer DEFAULT 0 NOT NULL,
 	"reading_time" integer DEFAULT 5,
-	CONSTRAINT "blogs_slug_unique" UNIQUE("slug")
+	CONSTRAINT "bsa_blogs_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "faqs" (
+CREATE TABLE "bsa_faqs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"question" varchar(500) NOT NULL,
 	"answer" text NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE "faqs" (
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE "leads" (
+CREATE TABLE "bsa_leads" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(200) NOT NULL,
 	"phone" varchar(50) NOT NULL,
@@ -44,7 +44,36 @@ CREATE TABLE "leads" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "portfolios" (
+CREATE TABLE "bsa_media" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"url" text NOT NULL,
+	"file_name" varchar(300) NOT NULL,
+	"original_name" varchar(300),
+	"size" integer NOT NULL,
+	"type" varchar(100) NOT NULL,
+	"folder" varchar(100) DEFAULT 'general',
+	"alt" varchar(500),
+	"width" integer,
+	"height" integer,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE "bsa_page_settings" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"slug" varchar(100) NOT NULL,
+	"title" varchar(300) NOT NULL,
+	"description" text,
+	"sections" jsonb NOT NULL,
+	"seo_title" varchar(500),
+	"seo_description" text,
+	"is_active" boolean DEFAULT true NOT NULL,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "bsa_page_settings_slug_unique" UNIQUE("slug")
+);
+--> statement-breakpoint
+CREATE TABLE "bsa_portfolios" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" varchar(500) NOT NULL,
 	"slug" varchar(500),
@@ -52,6 +81,7 @@ CREATE TABLE "portfolios" (
 	"location" varchar(200) NOT NULL,
 	"year" varchar(20) NOT NULL,
 	"image" text NOT NULL,
+	"images" jsonb DEFAULT '[]'::jsonb,
 	"diameter" varchar(100),
 	"height" varchar(100),
 	"material" varchar(200),
@@ -61,7 +91,7 @@ CREATE TABLE "portfolios" (
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE "services" (
+CREATE TABLE "bsa_services" (
 	"id" varchar(100) PRIMARY KEY NOT NULL,
 	"slug" varchar(100) NOT NULL,
 	"title" varchar(300) NOT NULL,
@@ -77,10 +107,10 @@ CREATE TABLE "services" (
 	"landing_page" jsonb,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
-	CONSTRAINT "services_slug_unique" UNIQUE("slug")
+	CONSTRAINT "bsa_services_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "settings" (
+CREATE TABLE "bsa_settings" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"company" jsonb NOT NULL,
 	"hero" jsonb NOT NULL,
@@ -89,7 +119,7 @@ CREATE TABLE "settings" (
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE "testimonials" (
+CREATE TABLE "bsa_testimonials" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(200) NOT NULL,
 	"location" varchar(300) NOT NULL,
