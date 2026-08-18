@@ -126,6 +126,18 @@
   will-change: transform;
 }
 
+/* Performance: content-visibility for below-fold sections - improves rendering without layout change */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
+}
+
+@media (max-width: 768px) {
+  .cv-auto {
+    contain-intrinsic-size: 0 600px;
+  }
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

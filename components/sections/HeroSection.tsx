@@ -46,12 +46,12 @@ export default async function HeroSection() {
 
  const whatsappLink = company?.contact?.whatsappLink || "https://api.whatsapp.com/send?phone=6281230469914";
 
- return (
- <section className="relative overflow-hidden bg-gradient-to-br from-white via-[#FFFBF5] to-gold-50/30">
-  <IslamicPattern variant="subtle" className="opacity-60" />
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-white via-[#FFFBF5] to-gold-50/30">
+      <IslamicPattern variant="subtle" className="opacity-20 lg:opacity-40 hidden sm:block" />
 
-  <div className="absolute -top-40 -right-40 w-[700px] h-[700px] bg-gradient-to-br from-maroon-100/80 to-gold-100/60 rounded-full blur-3xl opacity-50 pointer-events-none" />
-  <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-gradient-to-tr from-gold-100/70 to-maroon-50/50 rounded-full blur-3xl opacity-40 pointer-events-none" />
+      <div className="absolute -top-20 -right-20 lg:-top-40 lg:-right-40 w-[300px] h-[300px] lg:w-[700px] lg:h-[700px] bg-gradient-to-br from-maroon-100/60 to-gold-100/40 rounded-full blur-2xl lg:blur-3xl opacity-30 lg:opacity-50 pointer-events-none will-change-transform" />
+      <div className="absolute -bottom-20 -left-20 lg:-bottom-40 lg:-left-40 w-[250px] h-[250px] lg:w-[600px] lg:h-[600px] bg-gradient-to-tr from-gold-100/50 to-maroon-50/30 rounded-full blur-2xl lg:blur-3xl opacity-20 lg:opacity-40 pointer-events-none will-change-transform" />
 
   <div className="relative container mx-auto px-4 lg:px-8 py-10 lg:py-20">
   <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">

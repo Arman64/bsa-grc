@@ -8,26 +8,32 @@ import { SettingsProvider } from "@/components/providers/SettingsProvider";
 import { generateSEOMetadata, generateLocalBusinessSchema } from "@/lib/seo";
 import { COMPANY_INFO } from "@/lib/constants";
 
-// Fonts - Performance: display swap & subset Indonesian
+// Fonts - Performance Optimized: reduced weights for 90+ score
 const poppins = Poppins({
- subsets: ["latin"],
- weight: ["400", "500", "600", "700", "800"],
- variable: "--font-poppins",
- display: "swap",
- preload: true,
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+  preload: true,
+  fallback: ["system-ui", "sans-serif"],
+  adjustFontFallback: true,
 });
 
 const inter = Inter({
- subsets: ["latin"],
- variable: "--font-inter",
- display: "swap",
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-inter",
+  display: "swap",
+  preload: false,
+  fallback: ["system-ui", "sans-serif"],
 });
 
 const amiri = Amiri({
- subsets: ["arabic", "latin"],
- weight: ["400", "700"],
- variable: "--font-amiri",
- display: "swap",
+  subsets: ["arabic", "latin"],
+  weight: ["400"],
+  variable: "--font-amiri",
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = generateSEOMetadata({
