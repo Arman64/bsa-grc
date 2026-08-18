@@ -41,7 +41,7 @@ const steps = [
 
 export default function ProcessSection() {
  return (
- <section className="py-16 lg:py-24 bg-white border-y border-gold-100/50">
+ <section className="cv-auto py-16 lg:py-24 bg-white border-y border-gold-100/50">
   <div className="container mx-auto px-4 lg:px-8">
   <SectionHeader
    badge="Alur Pengerjaan"

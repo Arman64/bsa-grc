@@ -13,7 +13,7 @@ export default async function PortfolioSection() {
  } catch {}
 
  return (
- <section className="py-16 lg:py-24 bg-muted/40 relative overflow-hidden border-y border-gold-100/50">
+ <section className="cv-auto py-16 lg:py-24 bg-muted/40 relative overflow-hidden border-y border-gold-100/50">
   <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-200 to-transparent" />
   <div className="absolute -top-40 right-0 w-[500px] h-[500px] bg-gold-100/40 rounded-full blur-3xl pointer-events-none" />
 

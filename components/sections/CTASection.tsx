@@ -4,7 +4,7 @@ import { COMPANY_INFO } from "@/lib/constants";
 
 export default function CTASection() {
  return (
- <section className="py-16 lg:py-20 bg-maroon-900 relative overflow-hidden">
+ <section className="cv-auto py-16 lg:py-20 bg-maroon-900 relative overflow-hidden">
   <div className="absolute inset-0 islamic-pattern opacity-[0.05]" />
   <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-maroon-700 via-gold-400 to-maroon-700" />
   

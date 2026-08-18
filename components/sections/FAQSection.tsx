@@ -97,7 +97,7 @@ export default function FAQSection({ faqs: propFaqs }: { faqs?: Faq[] }) {
  const faqs = propFaqs && propFaqs.length > 0 ? propFaqs.map((f: any) => ({ q: f.question || f.q, a: f.answer || f.a } as any)) : FALLBACK_FAQS;
 
  return (
- <section className="py-16 lg:py-24 bg-muted/30 border-t border-gold-100/50">
+ <section className="cv-auto py-16 lg:py-24 bg-muted/30 border-t border-gold-100/50">
   <div className="container mx-auto px-4 lg:px-8">
   <div className="grid lg:grid-cols-[380px_1fr] gap-12 lg:gap-16 items-start">
    <div className="lg:sticky lg:top-24 space-y-6">

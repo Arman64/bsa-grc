@@ -17,7 +17,7 @@ export default async function TestimonialSection() {
  }
 
  return (
- <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
+ <section className="cv-auto py-16 lg:py-24 bg-white relative overflow-hidden">
   <div className="container mx-auto px-4 lg:px-8">
   <SectionHeader
    badge={`Testimoni Klien - ${testimonials.length} Ulasan`}

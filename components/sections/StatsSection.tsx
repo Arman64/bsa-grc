@@ -19,7 +19,7 @@ export default async function StatsSection() {
  ];
 
  return (
- <section className="py-10 lg:py-14 bg-maroon-900 relative overflow-hidden border-y border-maroon-800">
+ <section className="cv-auto py-10 lg:py-14 bg-maroon-900 relative overflow-hidden border-y border-maroon-800">
   <div className="absolute inset-0 islamic-pattern opacity-[0.04]" />
   <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-50" />
 

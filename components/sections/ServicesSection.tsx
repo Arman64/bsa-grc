@@ -25,7 +25,7 @@ export default async function ServicesSection() {
 
  if (services.length === 0) {
  return (
-  <section className="py-16 lg:py-24 bg-white">
+  <section className="cv-auto py-16 lg:py-24 bg-white">
   <div className="container mx-auto px-4 lg:px-8 text-center">
    <SectionHeader
    badge="Layanan Utama Kosong"
@@ -39,7 +39,7 @@ export default async function ServicesSection() {
  }
 
  return (
- <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
+ <section className="cv-auto py-16 lg:py-24 bg-white relative overflow-hidden">
   <IslamicPattern variant="gold" className="opacity-30" />
 
   <div className="relative container mx-auto px-4 lg:px-8">
