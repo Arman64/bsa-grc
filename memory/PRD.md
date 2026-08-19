@@ -36,6 +36,15 @@ User has a Next.js 14 (App Router) + Drizzle ORM + Neon Postgres company-profile
 
 ## Backlog / Next
 - P1: Full live color theming (brand palette editor) — deferred (palette is Tailwind-compiled; needs CSS-variable refactor).
+- P1: Redirection Manager UI (manual 301 redirects for lost WP URLs).
+- P1: Category listing pages matching old WP category URLs.
 - P2: Media Library picker inside FieldEditor image fields (currently upload + URL).
 - P2: Multi-admin user management UI (table exists).
 - P2: Defensive server-side confirm-password check.
+
+## WP Bulk Import + Auto Sitemap Ping + MCP Edit/Publish permission (2026-08)
+- **Bulk WP XML importer**: `/admin/blog/import` UI + `POST /api/admin/blog-import` (multipart: `file` .xml, `overwriteExisting`, `downloadImages`, `defaultStatus`=publish|draft|keep). Parses WordPress WXR export (`lib/wp-import.ts`, uses `fast-xml-parser` + `turndown`), extracts posts, categories/tags, Yoast SEO meta, featured image via `_thumbnail_id` → attachment map. Content HTML converted to Markdown; `<img>` URLs optionally re-downloaded & re-hosted through the same storage cascade as manual uploads (`lib/storage.ts`: Vercel Blob → Supabase → filesystem/tmp fallback). Duplicate slugs skipped unless overwrite is on. User confirmed: run this BEFORE bsagrc.co.id DNS is cut over to the new site, since old wp-content/uploads images become unreachable after cutover — importer downloads them into new storage while old domain is still live. Tested end-to-end via curl with a sample WXR file (parse, image download+AVIF convert, create).
+- **Auto sitemap ping** (`lib/sitemap-ping.ts`): fires on every new/updated *published* article (admin CRUD `app/api/admin/blog/route.ts`, MCP create/PATCH `app/api/mcp/blog/route.ts`) and once after bulk import. Combination chosen by user: (1) legacy Bing sitemap ping endpoint, (2) IndexNow protocol (notifies Bing+Yandex). IndexNow key auto-generated & persisted in `bsa_settings.integrations.indexNowKey`; verification file served at `GET /api/indexnow-key` (passed as explicit `keyLocation`, no root-path rewrite needed — doesn't conflict with the blog `[slug]` catch-all).
+- **MCP permission merged edit+publish**: added single `blog:edit` permission (label "Edit & Publish/Unpublish Artikel") — user chose NOT to split into two permissions. New `PATCH /api/mcp/blog` (body: `slug` or `id` + any of title/content/excerpt/coverImage/category/tags/seoTitle/seoDescription/keywords/isPublished) requires `blog:edit`; existing `blog:write` (create) and `blog:read` unchanged. Verified via curl: create → PATCH publish+edit content with `blog:edit` token succeeds; PATCH with a `blog:write`-only token correctly returns 401.
+- Image storage question answered: code already had Vercel Blob support but `BLOB_READ_WRITE_TOKEN` is NOT set (neither here nor confirmed in Vercel) → uploads currently fall back to filesystem, which is NOT persistent on Vercel prod (read-only, ephemeral). User skipped setting it up now — flagged as action item before going live with real image uploads/imports in production.
+- Nav: added "Import WP XML" under Konten group in `AdminLayout.tsx`.

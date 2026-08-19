@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBlogData, createBlog, updateBlog, deleteBlog, slugify, calculateReadingTime } from "@/lib/data";
+import { pingUrl } from "@/lib/sitemap-ping";
+import { COMPANY_INFO } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +44,8 @@ export async function POST(request: NextRequest) {
    readingTime: body.readingTime || calculateReadingTime(body.content),
   } as any);
 
+  if (newBlog.isPublished) pingUrl(`${COMPANY_INFO.website}/${newBlog.slug}`).catch(() => {});
+
   return NextResponse.json({ success: true, message: "Artikel berhasil ditambah ke", data: newBlog }, { status: 201 });
  } catch (error) {
   console.error(error);
@@ -58,6 +62,8 @@ export async function PUT(request: NextRequest) {
   }
 
   const updated = await updateBlog(Number(body.id), body);
+
+  if (updated.isPublished) pingUrl(`${COMPANY_INFO.website}/${updated.slug}`).catch(() => {});
 
   return NextResponse.json({ success: true, message: "Artikel berhasil diupdate di", data: updated });
  } catch (error) {

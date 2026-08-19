@@ -6,7 +6,8 @@ import { KeyRound, Plus, Trash2, Copy, Check, Eye, EyeOff, Ban, RotateCcw, Loade
 
 const PERMS = [
   { id: "blog:read", label: "Baca Blog (GET /api/mcp/blog)" },
-  { id: "blog:write", label: "Tulis / Publish Blog (POST /api/mcp/blog)" },
+  { id: "blog:write", label: "Tulis / Buat Artikel Baru (POST /api/mcp/blog)" },
+  { id: "blog:edit", label: "Edit & Publish/Unpublish Artikel (PATCH /api/mcp/blog)" },
 ];
 
 const EXPIRY_OPTIONS = [
@@ -105,6 +106,8 @@ export default function McpTokensPage() {
           <p className="font-bold text-maroon-800 flex items-center gap-2"><Terminal className="w-4 h-4" /> Cara pakai</p>
           <p className="text-maroon-700/90 mt-1">Kirim request ke <code className="bg-white border px-1.5 py-0.5 rounded">/api/mcp/blog</code> dengan header <code className="bg-white border px-1.5 py-0.5 rounded">X-API-KEY: &lt;token&gt;</code>.</p>
           <code className="block bg-white border rounded-lg p-2 mt-2 text-[11px] font-mono overflow-x-auto">{`curl -X POST https://bsa-grc.vercel.app/api/mcp/blog -H "X-API-KEY: TOKEN_ANDA" -H "Content-Type: application/json" -d '{"title":"Judul","content":"## Isi"}'`}</code>
+          <p className="text-maroon-700/90 mt-3">Edit / publish artikel yang sudah ada (butuh permission <code className="bg-white border px-1 py-0.5 rounded">blog:edit</code>):</p>
+          <code className="block bg-white border rounded-lg p-2 mt-2 text-[11px] font-mono overflow-x-auto">{`curl -X PATCH https://bsa-grc.vercel.app/api/mcp/blog -H "X-API-KEY: TOKEN_ANDA" -H "Content-Type: application/json" -d '{"slug":"judul-artikel","isPublished":true}'`}</code>
         </div>
 
         {/* Create form */}

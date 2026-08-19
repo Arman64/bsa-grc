@@ -8,7 +8,8 @@ import { apiTokens } from "./schema";
 
 export const MCP_PERMISSIONS = [
   { id: "blog:read", label: "Baca Blog (GET /api/mcp/blog)" },
-  { id: "blog:write", label: "Tulis / Publish Blog (POST /api/mcp/blog)" },
+  { id: "blog:write", label: "Tulis / Buat Artikel Baru (POST /api/mcp/blog)" },
+  { id: "blog:edit", label: "Edit & Publish/Unpublish Artikel (PATCH /api/mcp/blog)" },
 ];
 
 function ensureDb() {

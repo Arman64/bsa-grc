@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Layers, Briefcase, Images, BookOpen, Star, HelpCircle,
   Image as ImageIcon, Palette, Menu as MenuIcon, Settings, Globe, UserCog,
-  LogOut, ExternalLink, X, ChevronRight, KeyRound,
+  LogOut, ExternalLink, X, ChevronRight, KeyRound, UploadCloud,
 } from "lucide-react";
 
 const MENU = [
@@ -21,6 +21,7 @@ const MENU = [
       { label: "Layanan", href: "/admin/services", icon: Briefcase },
       { label: "Portofolio", href: "/admin/portfolio", icon: Images },
       { label: "Blog", href: "/admin/blog", icon: BookOpen },
+      { label: "Import WP XML", href: "/admin/blog/import", icon: UploadCloud },
       { label: "Testimoni", href: "/admin/testimonials", icon: Star },
       { label: "FAQ", href: "/admin/faqs", icon: HelpCircle },
       { label: "Media", href: "/admin/media", icon: ImageIcon },
