@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Save, Edit3, Upload, Building2, CheckCircle2, Megaphone, Eye, Image as ImageIcon, LibraryBig } from "lucide-react";
+import { Save, Edit3, Upload, Building2, CheckCircle2, Megaphone, Eye, Image as ImageIcon, LibraryBig, AlertTriangle, Award, Star, HelpCircle, Trash2, Plus, X } from "lucide-react";
 import MediaPickerModal from "@/components/admin/MediaPickerModal";
 
 interface LandingPageData {
@@ -123,6 +123,84 @@ export default function AdminServicesPage() {
    landingPage: { ...form.landingPage!, heroImage: url, heroImages: [url, ...(form.landingPage?.heroImages || [])].slice(0, 5) } as LandingPageData,
   });
   }
+ };
+
+ const updateLP = (patch: Partial<LandingPageData>) => setForm({ ...form, landingPage: { ...form.landingPage!, ...patch } as LandingPageData });
+
+ const removeHeroGalleryImage = (idx: number) => {
+  const heroImages = [...(form.landingPage?.heroImages || [])];
+  heroImages.splice(idx, 1);
+  updateLP({ heroImages });
+ };
+ const addHeroGalleryImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("folder", "services");
+  const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+  const json = await res.json();
+  if (json.success) updateLP({ heroImages: [...(form.landingPage?.heroImages || []), json.data.url] });
+ };
+
+ const addPainPoint = () => updateLP({ painPoints: [...(form.landingPage?.painPoints || []), { pain: "", solution: "" }] });
+ const updatePainPoint = (idx: number, key: "pain" | "solution", value: string) => {
+  const list = [...(form.landingPage?.painPoints || [])];
+  list[idx] = { ...list[idx], [key]: value };
+  updateLP({ painPoints: list });
+ };
+ const removePainPoint = (idx: number) => {
+  const list = [...(form.landingPage?.painPoints || [])];
+  list.splice(idx, 1);
+  updateLP({ painPoints: list });
+ };
+
+ const addBenefit = () => updateLP({ benefits: [...(form.landingPage?.benefits || []), { title: "", desc: "" }] });
+ const updateBenefit = (idx: number, key: "title" | "desc", value: string) => {
+  const list = [...(form.landingPage?.benefits || [])];
+  list[idx] = { ...list[idx], [key]: value };
+  updateLP({ benefits: list });
+ };
+ const removeBenefit = (idx: number) => {
+  const list = [...(form.landingPage?.benefits || [])];
+  list.splice(idx, 1);
+  updateLP({ benefits: list });
+ };
+
+ const addFaq = () => updateLP({ faqs: [...(form.landingPage?.faqs || []), { q: "", a: "" }] });
+ const updateFaq = (idx: number, key: "q" | "a", value: string) => {
+  const list = [...(form.landingPage?.faqs || [])];
+  list[idx] = { ...list[idx], [key]: value };
+  updateLP({ faqs: list });
+ };
+ const removeFaq = (idx: number) => {
+  const list = [...(form.landingPage?.faqs || [])];
+  list.splice(idx, 1);
+  updateLP({ faqs: list });
+ };
+
+ const updateSocialProof = (key: "rating" | "reviews" | "projects" | "provinces", value: string) => {
+  updateLP({ socialProof: { ...form.landingPage!.socialProof, [key]: value } });
+ };
+ const addTestimonial = () =>
+  updateLP({ socialProof: { ...form.landingPage!.socialProof, testimonials: [...(form.landingPage?.socialProof.testimonials || []), { name: "", location: "", role: "Panitia Masjid", text: "", result: "", photo: "" }] } });
+ const updateTestimonial = (idx: number, key: "name" | "location" | "role" | "text" | "result" | "photo", value: string) => {
+  const list = [...(form.landingPage?.socialProof.testimonials || [])];
+  list[idx] = { ...list[idx], [key]: value };
+  updateLP({ socialProof: { ...form.landingPage!.socialProof, testimonials: list } });
+ };
+ const removeTestimonial = (idx: number) => {
+  const list = [...(form.landingPage?.socialProof.testimonials || [])];
+  list.splice(idx, 1);
+  updateLP({ socialProof: { ...form.landingPage!.socialProof, testimonials: list } });
+ };
+ const uploadTestimonialPhoto = async (idx: number, file: File) => {
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("folder", "testimonials");
+  const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+  const json = await res.json();
+  if (json.success) updateTestimonial(idx, "photo", json.data.url);
  };
 
  const handleSave = async (e: React.FormEvent) => {
@@ -284,6 +362,20 @@ export default function AdminServicesPage() {
       <label className="text-xs font-bold mb-1 block">Hero Video URL (30-60 detik, YouTube optional)</label>
       <input value={form.landingPage?.heroVideoUrl || ""} onChange={(e) => setForm({ ...form, landingPage: { ...form.landingPage!, heroVideoUrl: e.target.value } as LandingPageData })} placeholder="https://youtube.com/..." className="w-full px-3 py-2 rounded-xl border text-xs" />
      </div>
+     <div>
+      <label className="text-xs font-bold mb-1 block">Galeri Foto Tambahan (Gallery Strip di bawah Hero Image)</label>
+      <div className="flex flex-wrap gap-2 mb-2">
+      {(form.landingPage?.heroImages || []).map((img, idx) => (
+       <div key={idx} className="relative w-16 h-16 rounded-lg border overflow-hidden group">
+       <img src={img} alt={`Galeri ${idx + 1}`} className="w-full h-full object-cover" />
+       <button type="button" onClick={() => removeHeroGalleryImage(idx)} className="absolute inset-0 bg-black/50 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+        <X className="w-4 h-4" />
+       </button>
+       </div>
+      ))}
+      </div>
+      <input type="file" accept="image/*" onChange={addHeroGalleryImage} className="text-xs" />
+     </div>
      </div>
 
      {/* Value Prop - Elemen 4 */}
@@ -300,10 +392,68 @@ export default function AdminServicesPage() {
      </button>
      </div>
 
-     {/* CTA - Elemen 7 */}
+     {/* Pain Points - Elemen 5 */}
+     <div className="bg-white border rounded-2xl p-5 space-y-3">
+     <h4 className="font-bold flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-600" /> 5. Pain Points - Masalah vs Solusi (tampil sebagai section "Apakah Anda Mengalami Masalah Ini?")</h4>
+     {(form.landingPage?.painPoints || []).map((pp, idx) => (
+      <div key={idx} className="grid grid-cols-[1fr_1fr_auto] gap-2 border rounded-xl p-3 bg-red-50/30">
+      <input value={pp.pain} onChange={(e) => updatePainPoint(idx, "pain", e.target.value)} placeholder="Masalah (Kubah bocor tiap hujan)" className="px-3 py-2 rounded-lg border text-xs" />
+      <input value={pp.solution} onChange={(e) => updatePainPoint(idx, "solution", e.target.value)} placeholder="Solusi BSA GRC" className="px-3 py-2 rounded-lg border text-xs" />
+      <button type="button" onClick={() => removePainPoint(idx)} className="text-red-600 hover:bg-red-50 rounded-lg px-2"><Trash2 className="w-4 h-4" /></button>
+      </div>
+     ))}
+     <button type="button" onClick={addPainPoint} className="text-xs border px-3 py-1 rounded-full hover:bg-muted inline-flex items-center gap-1"><Plus className="w-3 h-3" /> Tambah Pain Point</button>
+     </div>
+
+     {/* Benefits Grid - Elemen 6 */}
+     <div className="bg-white border rounded-2xl p-5 space-y-3">
+     <h4 className="font-bold flex items-center gap-2"><Award className="w-4 h-4 text-maroon-700" /> 6. Keunggulan (Grid "6 Keunggulan BSA GRC" + dipakai ulang di CTA bawah)</h4>
+     {(form.landingPage?.benefits || []).map((b, idx) => (
+      <div key={idx} className="grid grid-cols-[1fr_1fr_auto] gap-2 border rounded-xl p-3 bg-muted/20">
+      <input value={b.title} onChange={(e) => updateBenefit(idx, "title", e.target.value)} placeholder="Judul keunggulan" className="px-3 py-2 rounded-lg border text-xs font-semibold" />
+      <input value={b.desc} onChange={(e) => updateBenefit(idx, "desc", e.target.value)} placeholder="Deskripsi singkat" className="px-3 py-2 rounded-lg border text-xs" />
+      <button type="button" onClick={() => removeBenefit(idx)} className="text-red-600 hover:bg-red-50 rounded-lg px-2"><Trash2 className="w-4 h-4" /></button>
+      </div>
+     ))}
+     <button type="button" onClick={addBenefit} className="text-xs border px-3 py-1 rounded-full hover:bg-muted inline-flex items-center gap-1"><Plus className="w-3 h-3" /> Tambah Keunggulan</button>
+     </div>
+
+     {/* Social Proof - Elemen 7 */}
+     <div className="bg-white border rounded-2xl p-5 space-y-4">
+     <h4 className="font-bold flex items-center gap-2"><Star className="w-4 h-4 text-gold-500" /> 7. Social Proof - Rating, Statistik & Testimoni</h4>
+     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+      <div><label className="text-[11px] font-bold mb-1 block">Rating</label><input value={form.landingPage?.socialProof.rating || ""} onChange={(e) => updateSocialProof("rating", e.target.value)} placeholder="5.0" className="w-full px-3 py-2 rounded-lg border text-xs" /></div>
+      <div><label className="text-[11px] font-bold mb-1 block">Jumlah Ulasan</label><input value={form.landingPage?.socialProof.reviews || ""} onChange={(e) => updateSocialProof("reviews", e.target.value)} placeholder="127" className="w-full px-3 py-2 rounded-lg border text-xs" /></div>
+      <div><label className="text-[11px] font-bold mb-1 block">Jumlah Proyek</label><input value={form.landingPage?.socialProof.projects || ""} onChange={(e) => updateSocialProof("projects", e.target.value)} placeholder="500+" className="w-full px-3 py-2 rounded-lg border text-xs" /></div>
+      <div><label className="text-[11px] font-bold mb-1 block">Provinsi</label><input value={form.landingPage?.socialProof.provinces || ""} onChange={(e) => updateSocialProof("provinces", e.target.value)} placeholder="34 Provinsi" className="w-full px-3 py-2 rounded-lg border text-xs" /></div>
+     </div>
+
+     <div className="space-y-3">
+      <p className="text-xs font-bold">Testimoni (tampil sebagai kartu "Apa Kata Panitia yang Sudah Pakai?")</p>
+      {(form.landingPage?.socialProof.testimonials || []).map((t, idx) => (
+      <div key={idx} className="border rounded-xl p-3 bg-muted/20 space-y-2">
+       <div className="flex items-center gap-3">
+       {t.photo && <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover border flex-shrink-0" />}
+       <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadTestimonialPhoto(idx, f); }} className="text-[11px] flex-1" />
+       <button type="button" onClick={() => removeTestimonial(idx)} className="text-red-600 hover:bg-red-50 rounded-lg p-1.5 flex-shrink-0"><Trash2 className="w-4 h-4" /></button>
+       </div>
+       <div className="grid grid-cols-2 gap-2">
+       <input value={t.name} onChange={(e) => updateTestimonial(idx, "name", e.target.value)} placeholder="Nama - H. Slamet" className="px-3 py-2 rounded-lg border text-xs" />
+       <input value={t.location} onChange={(e) => updateTestimonial(idx, "location", e.target.value)} placeholder="Lokasi - Masjid Jami' Trenggalek" className="px-3 py-2 rounded-lg border text-xs" />
+       </div>
+       <input value={t.role} onChange={(e) => updateTestimonial(idx, "role", e.target.value)} placeholder="Role - Ketua Panitia" className="w-full px-3 py-2 rounded-lg border text-xs" />
+       <textarea value={t.text} onChange={(e) => updateTestimonial(idx, "text", e.target.value)} rows={2} placeholder="Isi testimoni spesifik" className="w-full px-3 py-2 rounded-lg border text-xs resize-none" />
+       <input value={t.result} onChange={(e) => updateTestimonial(idx, "result", e.target.value)} placeholder="Hasil - Anti bocor 3 tahun" className="w-full px-3 py-2 rounded-lg border text-xs" />
+      </div>
+      ))}
+      <button type="button" onClick={addTestimonial} className="text-xs border px-3 py-1 rounded-full hover:bg-muted inline-flex items-center gap-1"><Plus className="w-3 h-3" /> Tambah Testimoni</button>
+     </div>
+     </div>
+
+     {/* CTA - Elemen 8 */}
      <div className="grid md:grid-cols-2 gap-4">
      <div className="bg-gold-50 border border-gold-200 rounded-2xl p-5 space-y-3">
-      <h4 className="font-bold text-sm">7. CTA Menonjol (Kontras Tinggi, Teks Aksi)</h4>
+      <h4 className="font-bold text-sm">8. CTA Menonjol (Kontras Tinggi, Teks Aksi)</h4>
       <div>
       <label className="text-xs font-bold mb-1 block">Teks CTA (Jangan 'Kirim', pakai 'Dapatkan Penawaran Gratis Sekarang')</label>
       <input value={form.landingPage?.ctaPrimary || ""} onChange={(e) => setForm({ ...form, landingPage: { ...form.landingPage!, ctaPrimary: e.target.value } as LandingPageData })} className="w-full px-3 py-2 rounded-xl border text-sm font-bold" />
@@ -315,7 +465,7 @@ export default function AdminServicesPage() {
      </div>
 
      <div className="bg-green-50 border border-green-200 rounded-2xl p-5 space-y-3">
-      <h4 className="font-bold text-sm">8. Risk Reversal (Garansi, Data Aman)</h4>
+      <h4 className="font-bold text-sm">9. Risk Reversal (Garansi, Data Aman)</h4>
       <textarea
       value={form.landingPage?.guarantees?.join(", ") || ""}
       onChange={(e) => setForm({ ...form, landingPage: { ...form.landingPage!, guarantees: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) } as LandingPageData })}
@@ -326,9 +476,23 @@ export default function AdminServicesPage() {
      </div>
      </div>
 
+     {/* FAQ - Elemen 10 */}
+     <div className="bg-white border rounded-2xl p-5 space-y-3">
+     <h4 className="font-bold flex items-center gap-2"><HelpCircle className="w-4 h-4 text-maroon-700" /> 10. FAQ - Objection Handling</h4>
+     {(form.landingPage?.faqs || []).map((faq, idx) => (
+      <div key={idx} className="border rounded-xl p-3 bg-muted/20 space-y-2">
+      <div className="flex gap-2">
+       <input value={faq.q} onChange={(e) => updateFaq(idx, "q", e.target.value)} placeholder="Pertanyaan" className="flex-1 px-3 py-2 rounded-lg border text-xs font-semibold" />
+       <button type="button" onClick={() => removeFaq(idx)} className="text-red-600 hover:bg-red-50 rounded-lg px-2"><Trash2 className="w-4 h-4" /></button>
+      </div>
+      <textarea value={faq.a} onChange={(e) => updateFaq(idx, "a", e.target.value)} rows={2} placeholder="Jawaban" className="w-full px-3 py-2 rounded-lg border text-xs resize-none" />
+      </div>
+     ))}
+     <button type="button" onClick={addFaq} className="text-xs border px-3 py-1 rounded-full hover:bg-muted inline-flex items-center gap-1"><Plus className="w-3 h-3" /> Tambah FAQ</button>
+     </div>
+
      <div className="bg-muted/30 border border-dashed rounded-2xl p-4 text-xs">
-     <p className="font-bold">Elemen 5,6,8 Lainnya (Social Proof, Form, FAQ) diedit via file JSON langsung untuk sekarang. Fokus 4 elemen utama di atas sudah cukup untuk Ads.</p>
-     <p className="mt-1 text-muted-foreground">Navigasi menu sudah dihapus otomatis di landing page (hapus semua menu atas agar tidak kabur) + loading cepat + mobile responsif sudah optimal.</p>
+     <p className="text-muted-foreground">Navigasi menu sudah dihapus otomatis di landing page (hapus semua menu atas agar tidak kabur) + loading cepat + mobile responsif sudah optimal.</p>
      </div>
     </div>
     )}
