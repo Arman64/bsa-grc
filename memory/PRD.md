@@ -28,6 +28,12 @@ User has a Next.js 14 (App Router) + Drizzle ORM + Neon Postgres company-profile
 - Add Vercel env vars: `JWT_SECRET` (recommended), keep `ADMIN_EMAIL`/`ADMIN_PASSWORD` for initial seed. `DATABASE_URL` already set.
 - Lockfile normalized to `package-lock.json` (npm) incl. `bcryptjs`, `jose`.
 
+## Blog Migration Structure (2026-06) — WordPress-parity URLs
+- Articles now served at ROOT `bsagrc.co.id/<slug>` (matches old WordPress `/%postname%/`) via `app/[slug]/page.tsx` (ISR `revalidate=60` + `generateStaticParams`, `dynamicParams` on → newly imported slugs render on-demand WITHOUT redeploy). `/blog` remains the listing page.
+- 301/308 redirects in `next.config.js`: `/blog/:slug` → `/:slug`, `/blog/page/:num` → `/blog`.
+- All internal links + `sitemap.xml` + MCP response URLs use root `/<slug>`. Non-existent root URLs render a 404 UI and are `noindex` (mitigates soft-404 during migration).
+- Import path: `POST /api/mcp/blog` accepts custom `slug`, `publishedAt`, `seoTitle/Description`, `category`, `tags` (default coverImage supplied) → user imports old articles via MCP token, live at old URL. Content stored as Markdown.
+
 ## Backlog / Next
 - P1: Full live color theming (brand palette editor) — deferred (palette is Tailwind-compiled; needs CSS-variable refactor).
 - P2: Media Library picker inside FieldEditor image fields (currently upload + URL).

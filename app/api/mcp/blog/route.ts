@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBlogData, createBlog, slugify, calculateReadingTime } from "@/lib/data";
+import { validateToken } from "@/lib/tokens";
 
-function checkAuth(request: NextRequest): boolean {
- const apiKey = request.headers.get("x-api-key") || request.headers.get("x-mcp-key") || request.headers.get("authorization")?.replace("Bearer ", "");
- const validKey = process.env.MCP_API_KEY || process.env.BLOG_API_KEY || "bsa-grc-mcp-2026-secret";
- if (!apiKey) return false;
- return apiKey === validKey;
+async function checkAuth(request: NextRequest, permission: string): Promise<boolean> {
+  const apiKey =
+    request.headers.get("x-api-key") ||
+    request.headers.get("x-mcp-key") ||
+    request.headers.get("authorization")?.replace("Bearer ", "") ||
+    "";
+  if (!apiKey) return false;
+  // 1) DB-managed tokens (generated in /admin/mcp) with per-permission + expiry checks
+  const result = await validateToken(apiKey, permission);
+  if (result.ok) return true;
+  // 2) Legacy env key (full access) for backward compatibility
+  const legacyKey = process.env.MCP_API_KEY || process.env.BLOG_API_KEY;
+  if (legacyKey && apiKey === legacyKey) return true;
+  return false;
 }
 
 function getDocs() {
@@ -15,7 +25,7 @@ function getDocs() {
   auth: {
    required: true,
    headers: ["X-API-KEY: your-secret-key", "X-MCP-KEY", "Authorization: Bearer"],
-   default_key: "bsa-grc-mcp-2026-secret (ganti via ENV MCP_API_KEY di Vercel)",
+   default_key: "Buat & kelola token di Admin → Sistem → Token MCP / API (dengan kadaluarsa & permission). Legacy: ENV MCP_API_KEY.",
   },
   how_to_test: {
    curl_get: `curl -X GET https://your-domain.vercel.app/api/mcp/blog -H "X-API-KEY: bsa-grc-mcp-2026-secret"`,
@@ -28,7 +38,7 @@ function getDocs() {
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
- if (!checkAuth(request)) {
+ if (!(await checkAuth(request, "blog:write"))) {
   return NextResponse.json(
    {
     success: false,
@@ -85,7 +95,7 @@ export async function POST(request: NextRequest) {
   } as any);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bsagrc.co.id";
-  const articleUrl = `${siteUrl}/blog/${newBlog.slug}`;
+  const articleUrl = `${siteUrl}/${newBlog.slug}`;
 
   return NextResponse.json(
    {
@@ -108,7 +118,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
- if (!checkAuth(request)) {
+ if (!(await checkAuth(request, "blog:read"))) {
   return NextResponse.json(
    {
     success: false,
@@ -129,7 +139,7 @@ export async function GET(request: NextRequest) {
    success: true,
    total: blogs.length,
    source: "neon-db",
-   data: blogs.slice(0, limit).map((b) => ({ id: b.id, slug: b.slug, title: b.title, url: `/blog/${b.slug}`, isPublished: b.isPublished, publishedAt: b.publishedAt })),
+   data: blogs.slice(0, limit).map((b) => ({ id: b.id, slug: b.slug, title: b.title, url: `/${b.slug}`, isPublished: b.isPublished, publishedAt: b.publishedAt })),
   });
  } catch (e) {
   return NextResponse.json({ success: false, message: "Gagal ambil blog - cek DATABASE_URL" }, { status: 500 });

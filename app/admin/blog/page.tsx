@@ -111,9 +111,9 @@ export default function AdminBlogPage() {
   <div className="bg-gradient-to-r from-gold-50 to-maroon-50 border border-gold-200 rounded-2xl p-5 flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
    <div>
    <p className="font-bold text-sm flex items-center gap-2"><Tag className="w-4 h-4 text-gold-700" /> Automasi MCP / N8N Ready</p>
-   <p className="text-xs text-muted-foreground mt-1">POST ke <code className="bg-white border px-1.5 py-0.5 rounded">/api/mcp/blog</code> dengan header <code className="bg-white border px-1">X-API-KEY: {process.env.NEXT_PUBLIC_MCP_KEY || "bsa-grc-mcp-2026-secret"}</code> untuk upload otomatis artikel AI.</p>
+   <p className="text-xs text-muted-foreground mt-1">POST ke <code className="bg-white border px-1.5 py-0.5 rounded">/api/mcp/blog</code> dengan header <code className="bg-white border px-1">X-API-KEY</code>. Buat & kelola token (kadaluarsa + permission) di menu Sistem.</p>
    </div>
-   <a href="/api/mcp/blog" target="_blank" className="text-xs bg-white border px-3 py-1.5 rounded-full hover:bg-muted">Lihat Docs API</a>
+   <a href="/admin/mcp" className="text-xs bg-white border px-3 py-1.5 rounded-full hover:bg-muted whitespace-nowrap">Kelola Token</a>
   </div>
 
   <div className="bg-white rounded-2xl border shadow-soft p-4 flex flex-col sm:flex-row gap-3 justify-between">
@@ -141,7 +141,7 @@ export default function AdminBlogPage() {
      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
      <button onClick={() => handleEdit(post)} className="w-9 h-9 bg-white rounded-full flex items-center justify-center"><Edit3 className="w-4 h-4" /></button>
      <button onClick={() => handleDelete(post.id)} className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-red-600"><Trash2 className="w-4 h-4" /></button>
-     <a href={`/blog/${post.slug}`} target="_blank" className="w-9 h-9 bg-white rounded-full flex items-center justify-center"><Eye className="w-4 h-4" /></a>
+     <a href={`/${post.slug}`} target="_blank" className="w-9 h-9 bg-white rounded-full flex items-center justify-center"><Eye className="w-4 h-4" /></a>
      </div>
     </div>
     <div className="p-4">

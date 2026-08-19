@@ -13,25 +13,29 @@ import ShareButton from "@/components/ui/ShareButton";
 
 type Props = { params: { slug: string } };
 
+// ISR: prebuild existing articles, render newly-imported slugs on-demand (dynamicParams),
+// revalidate keeps content fresh. Using ISR (not force-dynamic) so notFound() returns a real 404.
+export const revalidate = 60;
+
 export async function generateStaticParams() {
- try {
- const blogs = await getBlogData();
- return blogs.map((b) => ({ slug: b.slug }));
- } catch {
- return [];
- }
+  try {
+    const blogs = await getBlogData();
+    return blogs.map((b) => ({ slug: b.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
  const post = await getBlogBySlug(params.slug);
- if (!post) return {};
+ if (!post || !post.isPublished) return { title: "Tidak Ditemukan | BSA GRC", robots: { index: false, follow: false } };
 
  return generateSEOMetadata({
  title: post.seoTitle || post.title,
  description: post.seoDescription || post.excerpt,
  keywords: post.keywords,
  image: post.coverImage,
- url: `${COMPANY_INFO.website}/blog/${post.slug}`,
+ url: `${COMPANY_INFO.website}/${post.slug}`,
  type: "article",
  });
 }
@@ -62,7 +66,7 @@ export default async function BlogDetailPage({ params }: Props) {
  },
  datePublished: post.publishedAt,
  dateModified: post.updatedAt,
- mainEntityOfPage: { "@type": "WebPage", "@id": `${COMPANY_INFO.website}/blog/${post.slug}` },
+ mainEntityOfPage: { "@type": "WebPage", "@id": `${COMPANY_INFO.website}/${post.slug}` },
  keywords: (post.keywords || post.tags).join(", "),
  articleSection: post.category,
  wordCount: post.content.split(/\s+/).length,
@@ -75,7 +79,7 @@ export default async function BlogDetailPage({ params }: Props) {
  itemListElement: [
   { "@type": "ListItem", position: 1, name: "Beranda", item: COMPANY_INFO.website },
   { "@type": "ListItem", position: 2, name: "Blog", item: `${COMPANY_INFO.website}/blog` },
-  { "@type": "ListItem", position: 3, name: post.title, item: `${COMPANY_INFO.website}/blog/${post.slug}` },
+  { "@type": "ListItem", position: 3, name: post.title, item: `${COMPANY_INFO.website}/${post.slug}` },
  ],
  };
 
@@ -272,7 +276,7 @@ export default async function BlogDetailPage({ params }: Props) {
     <h4 className="font-bold text-sm mb-3">Artikel Terkait</h4>
     <div className="space-y-3">
      {allRelated.slice(0, 3).map((r) => (
-     <Link key={r.id} href={`/blog/${r.slug}`} className="block group">
+     <Link key={r.id} href={`/${r.slug}`} className="block group">
       <p className="font-semibold text-sm group-hover:text-maroon-700 line-clamp-2 leading-snug">{r.title}</p>
       <p className="text-xs text-muted-foreground mt-1">{r.category} • {r.readingTime} menit</p>
      </Link>
@@ -290,7 +294,7 @@ export default async function BlogDetailPage({ params }: Props) {
     <h3 className="font-bold text-xl mb-6">Artikel Terkait Lainnya</h3>
     <div className="grid md:grid-cols-3 gap-6">
      {allRelated.map((relatedPost) => (
-     <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} className="bg-white rounded-2xl border shadow-soft overflow-hidden hover:shadow-large transition-all p-5 group">
+     <Link key={relatedPost.id} href={`/${relatedPost.slug}`} className="bg-white rounded-2xl border shadow-soft overflow-hidden hover:shadow-large transition-all p-5 group">
       <span className="text-xs bg-maroon-50 text-maroon-700 border border-maroon-100 px-2.5 py-1 rounded-full font-semibold">{relatedPost.category}</span>
       <p className="font-bold text-sm mt-3 line-clamp-2 group-hover:text-maroon-700">{relatedPost.title}</p>
       <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{relatedPost.excerpt}</p>

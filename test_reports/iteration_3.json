@@ -1,0 +1,40 @@
+{
+  "summary": "Full test pass on the new MCP / API Token manager feature. Wrote /app/backend/tests/test_mcp_tokens.py (22 cases) covering: /admin/mcp auth-gate + page load, /api/admin/mcp-tokens CRUD (list/create/validation/patch-revoke/delete), permission enforcement on /api/mcp/blog (blog:read allows GET & rejects POST with 401; blog:write rejects GET; bogus & no-key both 401), revoke->401 / reactivate->200 flow, delete removes access, past-dated expiresAt yields status='expired' + 401, public pages regression. All 22 tests PASS. Re-ran /app/backend/tests/test_bsa_admin.py - 18/18 still PASS. Playwright UI verified: sidebar 'Sistem' group shows 'Token MCP / API' link, navigates to /admin/mcp, token-name-input/token-expiry-select/perm-blog:read/perm-blog:write/generate-token-btn all work, success box renders the new token (format bsagrc_mcp_<48 hex>) with copy button, new row appears in Daftar Token with correct name + 'Aktif' status badge + 'blog:read' permission badge + Cabut/Hapus buttons. Test data cleaned (no TEST_ tokens remain in DB).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/mcp/blog", "issue": "Uses 401 for permission-mismatch (has valid token but missing permission). Semantically 403 is more accurate; not blocking but slightly less RESTful."},
+      {"endpoint": "/api/admin/mcp-tokens PATCH", "issue": "Body flag semantics: {revoked:false} reactivates, {revoked:true} revokes, and omitting the field defaults to revoke. Works, but consider explicit action=revoke|reactivate for clarity."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/admin/mcp docs box", "issues": ["The 'Cara pakai' <code> block also uses class 'font-mono' which is identical to the just-created token code element - a more specific selector/testid on the new-token code would improve testability (minor). Existing header <Image> aspect-ratio Next.js warning still present (pre-existing carryover)."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_mcp_tokens.py",
+    "/app/backend/tests/test_bsa_admin.py",
+    "/app/test_reports/pytest/mcp_tokens.xml",
+    "/app/test_reports/pytest/bsa_admin.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "lib/tokens.ts: validateToken correctly checks revoked -> expired -> permission in that order and returns typed reasons; lastUsedAt is updated fire-and-forget (non-blocking) which is correct.",
+    "app/api/mcp/blog/route.ts: checkAuth is now async and awaits validateToken - legacy env-key fallback preserved. Consider returning 403 (instead of 401) when key is valid but permission missing, so clients can distinguish 'unknown key' vs 'insufficient scope'.",
+    "app/api/admin/mcp-tokens/route.ts: routes are guarded only by admin middleware (assumed via cookie); explicit auth check inside handlers would be defense-in-depth. Currently relying on Next middleware which is fine given /api/admin/* is protected.",
+    "app/admin/mcp/page.tsx: 'Aktif' status derivation happens on the server (lib/tokens.ts::status) - good. Client-side just displays; no dual-source-of-truth. Consider adding a data-testid on the just-created success-box code element to disambiguate from the docs curl example."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_mcp_tokens.py"
+  ],
+  "success_rate": {"backend": "100% (22/22 new + 18/18 regression = 40/40)", "frontend": "100% (sidebar link + navigation + create + success box + list row w/ badges verified via Playwright; revoke/reactivate/delete verified via API layer)"},
+  "test_credentials": "admin@bsagrc.co.id / BSA@GRC2026! - login succeeded on first try. Used 0 wrong-password attempts during this iteration (well under 5-lockout).",
+  "seed_data_creation": "None persistent. Test created TEST_read_only, TEST_write_only, TEST_expired, and one TEST_UI_* token during runs - all deleted (verified GET /api/admin/mcp-tokens returns [] for TEST_ prefix at end).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "MCP token feature is fully green. Regression suites: /app/backend/tests/test_bsa_admin.py (18) and /app/backend/tests/test_mcp_tokens.py (22). Both use BASE_URL hardcoded to the preview ingress URL. Login is single-attempt (avoid re-running in a tight loop to prevent 5/15min lockout). If a UI script needs to disambiguate the token string, target 'div.bg-green-50 code' or ask main agent to add a data-testid like 'new-token-value'. Expiry test uses a past ISO date and expects status='expired' + 401 from /api/mcp/blog.",
+  "rca of the issue": "N/A - feature works as specified. Only cosmetic recommendations noted above."
+}

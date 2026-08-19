@@ -13,7 +13,7 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
 
  return (
  <Link
-  href={`/blog/${post.slug}`}
+  href={`/${post.slug}`}
   className={`group bg-white rounded-2xl border shadow-soft overflow-hidden hover:shadow-large hover:-translate-y-1 transition-all duration-500 flex flex-col ${isFeatured ? "lg:flex-row" : ""}`}
  >
   <div className={`relative overflow-hidden bg-muted flex-shrink-0 ${isFeatured ? "lg:w-1/2 h-64 lg:h-auto" : "h-48"}`}>

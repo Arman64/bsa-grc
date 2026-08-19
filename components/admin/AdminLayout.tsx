@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, Layers, Briefcase, Images, BookOpen, Star, HelpCircle,
   Image as ImageIcon, Palette, Menu as MenuIcon, Settings, Globe, UserCog,
-  LogOut, ExternalLink, X, ChevronRight,
+  LogOut, ExternalLink, X, ChevronRight, KeyRound,
 } from "lucide-react";
 
 const MENU = [
@@ -38,6 +38,7 @@ const MENU = [
     items: [
       { label: "Pengaturan Umum", href: "/admin/settings", icon: Settings },
       { label: "SEO & Integrasi", href: "/admin/integrations", icon: Globe },
+      { label: "Token MCP / API", href: "/admin/mcp", icon: KeyRound },
       { label: "Akun & Password", href: "/admin/account", icon: UserCog },
     ],
   },

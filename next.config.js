@@ -28,8 +28,15 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
-  async headers() {
+  async redirects() {
     return [
+      // Old WordPress-migration: blog was briefly served under /blog/<slug>.
+      // Articles now live at root /<slug> (matches original WordPress permalinks) to preserve SEO.
+      { source: "/blog/page/:num", destination: "/blog", permanent: true },
+      { source: "/blog/:slug", destination: "/:slug", permanent: true },
+    ];
+  },
+  async headers() {    return [
       {
         source: "/(.*)",
         headers: [
