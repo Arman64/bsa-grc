@@ -3,7 +3,8 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Save, Edit3, Upload, Building2, CheckCircle2, Megaphone, Eye, Image as ImageIcon } from "lucide-react";
+import { Save, Edit3, Upload, Building2, CheckCircle2, Megaphone, Eye, Image as ImageIcon, LibraryBig } from "lucide-react";
+import MediaPickerModal from "@/components/admin/MediaPickerModal";
 
 interface LandingPageData {
  headline: string;
@@ -54,6 +55,7 @@ export default function AdminServicesPage() {
  const [saving, setSaving] = useState(false);
  const [uploading, setUploading] = useState(false);
  const [tab, setTab] = useState<"basic" | "landing">("basic");
+ const [pickerTarget, setPickerTarget] = useState<"originalImage" | "landingHero" | null>(null);
 
  const fetchServices = async () => {
  setLoading(true);
@@ -107,16 +109,20 @@ export default function AdminServicesPage() {
  const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
  const json = await res.json();
  if (json.success) {
+  applyImageToField(field, json.data.url);
+ } else alert(json.message);
+ setUploading(false);
+ };
+
+ const applyImageToField = (field: "originalImage" | "landingHero", url: string) => {
   if (field === "originalImage") {
-  setForm({ ...form, originalImage: json.data.url, image: json.data.url });
+  setForm({ ...form, originalImage: url, image: url });
   } else {
   setForm({
    ...form,
-   landingPage: { ...form.landingPage!, heroImage: json.data.url, heroImages: [json.data.url, ...(form.landingPage?.heroImages || [])].slice(0, 5) } as LandingPageData,
+   landingPage: { ...form.landingPage!, heroImage: url, heroImages: [url, ...(form.landingPage?.heroImages || [])].slice(0, 5) } as LandingPageData,
   });
   }
- } else alert(json.message);
- setUploading(false);
  };
 
  const handleSave = async (e: React.FormEvent) => {
@@ -194,7 +200,12 @@ export default function AdminServicesPage() {
       <label className="text-sm font-semibold mb-1.5 block">Gambar Layanan (Upload)</label>
       <div className="border-2 border-dashed rounded-xl p-3 text-center bg-muted/20">
       {form.originalImage && <img src={form.originalImage} alt="Preview" className="w-full h-40 object-contain bg-muted rounded-xl mb-3" />}
+      <div className="flex items-center gap-2 justify-center flex-wrap">
       <input type="file" accept="image/*" onChange={(e) => handleUpload(e, "originalImage")} className="text-xs" />
+      <button type="button" onClick={() => setPickerTarget("originalImage")} data-testid="service-image-gallery-btn" className="inline-flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-2.5 py-1 rounded-lg text-xs hover:bg-gold-100">
+       <LibraryBig className="w-3.5 h-3.5" /> Galeri
+      </button>
+      </div>
       {uploading && <p className="text-xs text-maroon-700 mt-1">Uploading...</p>}
       </div>
      </div>
@@ -262,6 +273,9 @@ export default function AdminServicesPage() {
       {form.landingPage?.heroImage && <img src={form.landingPage.heroImage} alt="Hero" className="w-24 h-24 object-cover rounded-xl border" />}
       <div className="flex-1">
        <input type="file" accept="image/*" onChange={(e) => handleUpload(e, "landingHero")} className="text-xs mb-2" />
+       <button type="button" onClick={() => setPickerTarget("landingHero")} data-testid="service-hero-gallery-btn" className="inline-flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-2.5 py-1 rounded-lg text-xs hover:bg-gold-100 mb-2 ml-2">
+        <LibraryBig className="w-3.5 h-3.5" /> Galeri
+       </button>
        <input value={form.landingPage?.heroImage || ""} onChange={(e) => setForm({ ...form, landingPage: { ...form.landingPage!, heroImage: e.target.value } as LandingPageData })} placeholder="URL hero image" className="w-full px-3 py-2 rounded-xl border text-xs" />
       </div>
       </div>
@@ -359,6 +373,13 @@ export default function AdminServicesPage() {
    </div>
   )}
   </div>
+
+  <MediaPickerModal
+   open={pickerTarget !== null}
+   onClose={() => setPickerTarget(null)}
+   initialFolder="services"
+   onSelect={(url) => { if (pickerTarget) applyImageToField(pickerTarget, url); }}
+  />
  </AdminLayout>
  );
 }

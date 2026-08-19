@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Plus, Edit3, Trash2, Upload, Search, X, Save, MapPin, Images, Star } from "lucide-react";
+import { Plus, Edit3, Trash2, Upload, Search, X, Save, MapPin, Images, Star, LibraryBig } from "lucide-react";
+import MediaPickerModal from "@/components/admin/MediaPickerModal";
 
 interface PortfolioItem {
   id: number;
@@ -28,6 +29,8 @@ export default function AdminPortfolioPage() {
   const [editing, setEditing] = useState<PortfolioItem | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [galleryPickerOpen, setGalleryPickerOpen] = useState(false);
   const [form, setForm] = useState<Partial<PortfolioItem>>({
     title: "",
     category: "Kubah GRC",
@@ -241,6 +244,9 @@ export default function AdminPortfolioPage() {
                         </div>
                       )}
                       <input type="file" accept="image/*" onChange={handleUpload} className="mt-3 text-sm" disabled={uploading} />
+                      <button type="button" onClick={() => setPickerOpen(true)} data-testid="portfolio-image-gallery-btn" className="mt-2 inline-flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-2.5 py-1.5 rounded-lg text-xs hover:bg-gold-100">
+                        <LibraryBig className="w-3.5 h-3.5" /> Pilih dari Galeri
+                      </button>
                       {uploading && <p className="text-xs text-maroon-700 mt-2">Mengupload...</p>}
                     </div>
                     <input value={form.image || ""} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="https://... atau /images/portfolio/... (manual URL)" className="mt-3 w-full px-4 py-2.5 rounded-xl border text-sm" />
@@ -275,6 +281,9 @@ export default function AdminPortfolioPage() {
 
                       <div className="mt-3">
                         <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} className="text-xs" disabled={uploadingGallery} />
+                        <button type="button" onClick={() => setGalleryPickerOpen(true)} data-testid="portfolio-gallery-picker-btn" className="ml-2 inline-flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-2.5 py-1.5 rounded-lg text-xs hover:bg-gold-100">
+                          <LibraryBig className="w-3.5 h-3.5" /> Pilih dari Galeri
+                        </button>
                         {uploadingGallery && <p className="text-xs text-maroon-700 mt-1">Mengupload {form.images?.length || 0} gambar...</p>}
                         <p className="text-[11px] text-muted-foreground mt-2">Bisa pilih banyak file sekaligus. Support JPG, PNG, WebP → otomatis jadi AVIF. Carousel di detail akan tampil dengan next/prev + thumbnails scrollable + lightbox.</p>
                       </div>
@@ -338,6 +347,15 @@ export default function AdminPortfolioPage() {
           </div>
         )}
       </div>
+
+      <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm({ ...form, image: url })} initialFolder="portfolio" />
+      <MediaPickerModal
+        open={galleryPickerOpen}
+        onClose={() => setGalleryPickerOpen(false)}
+        multiple
+        initialFolder="portfolio"
+        onSelectMultiple={(urls) => setForm({ ...form, images: [...(form.images || []), ...urls] })}
+      />
     </AdminLayout>
   );
 }

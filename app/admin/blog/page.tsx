@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Plus, Edit3, Trash2, Search, Eye, X, Save, Upload, Calendar, Tag } from "lucide-react";
+import { Plus, Edit3, Trash2, Search, Eye, X, Save, Upload, Calendar, Tag, LibraryBig } from "lucide-react";
 import type { BlogPost } from "@/lib/data";
+import MediaPickerModal from "@/components/admin/MediaPickerModal";
 
 const categories = ["Panduan Kubah", "Harga & Biaya", "Edukasi & Material", "Portofolio", "Tips Perawatan", "Artikel"];
 
@@ -14,6 +15,7 @@ export default function AdminBlogPage() {
  const [showModal, setShowModal] = useState(false);
  const [editing, setEditing] = useState<BlogPost | null>(null);
  const [uploading, setUploading] = useState(false);
+ const [pickerOpen, setPickerOpen] = useState(false);
  const [form, setForm] = useState<Partial<BlogPost>>({
  title: "",
  excerpt: "",
@@ -174,7 +176,12 @@ export default function AdminBlogPage() {
       <label className="text-sm font-semibold mb-1.5 block">Cover Image (Upload) *</label>
       <div className="border-2 border-dashed rounded-xl p-3 text-center bg-muted/20">
       {form.coverImage && <img src={form.coverImage} alt="Preview" className="w-full h-32 object-cover rounded-xl mb-2" />}
+      <div className="flex items-center gap-2 justify-center flex-wrap">
       <input type="file" accept="image/*" onChange={handleUpload} className="text-xs" />
+      <button type="button" onClick={() => setPickerOpen(true)} data-testid="blog-gallery-picker-btn" className="inline-flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-2.5 py-1 rounded-lg text-xs hover:bg-gold-100">
+       <LibraryBig className="w-3.5 h-3.5" /> Galeri
+      </button>
+      </div>
       {uploading && <p className="text-xs text-maroon-700 mt-1">Uploading...</p>}
       <input value={form.coverImage || ""} onChange={(e) => setForm({ ...form, coverImage: e.target.value })} placeholder="URL manual" className="mt-2 w-full px-3 py-2 rounded-xl border text-xs" />
       </div>
@@ -250,6 +257,8 @@ export default function AdminBlogPage() {
    </div>
   )}
   </div>
+
+  <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm({ ...form, coverImage: url })} initialFolder="blog" />
  </AdminLayout>
  );
 }

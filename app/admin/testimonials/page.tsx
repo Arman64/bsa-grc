@@ -3,7 +3,8 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Plus, Edit3, Trash2, Star, Search, X, Save } from "lucide-react";
+import { Plus, Edit3, Trash2, Star, Search, X, Save, LibraryBig } from "lucide-react";
+import MediaPickerModal from "@/components/admin/MediaPickerModal";
 
 interface Testimonial {
  id: number;
@@ -25,6 +26,7 @@ export default function AdminTestimonialsPage() {
  const [showModal, setShowModal] = useState(false);
  const [editing, setEditing] = useState<Testimonial | null>(null);
  const [form, setForm] = useState<Partial<Testimonial>>({ name: "", location: "", role: "Panitia Masjid", text: "", result: "", photo: "", rating: 5, category: "Kubah GRC", isActive: true });
+ const [pickerOpen, setPickerOpen] = useState(false);
 
  const fetchData = async () => {
  setLoading(true);
@@ -128,7 +130,13 @@ export default function AdminTestimonialsPage() {
     </div>
     <textarea value={form.text || ""} onChange={(e) => setForm({ ...form, text: e.target.value })} rows={4} placeholder="Isi testimoni spesifik dengan hasil..." className="w-full px-4 py-2.5 rounded-xl border text-sm" required />
     <input value={form.result || ""} onChange={(e) => setForm({ ...form, result: e.target.value })} placeholder="Hasil - Contoh: Anti bocor 3 tahun, jamaah +40%" className="w-full px-4 py-2.5 rounded-xl border text-sm" />
-    <input value={form.photo || ""} onChange={(e) => setForm({ ...form, photo: e.target.value })} placeholder="URL Foto - https://..." className="w-full px-4 py-2.5 rounded-xl border text-sm" />
+    <div className="flex items-center gap-2">
+     {form.photo && <img src={form.photo} alt="preview" className="w-10 h-10 rounded-full object-cover border" />}
+     <input value={form.photo || ""} onChange={(e) => setForm({ ...form, photo: e.target.value })} placeholder="URL Foto - https://..." className="flex-1 px-4 py-2.5 rounded-xl border text-sm" />
+     <button type="button" onClick={() => setPickerOpen(true)} data-testid="testimonial-photo-gallery-btn" className="inline-flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-3 py-2.5 rounded-xl text-xs hover:bg-gold-100 whitespace-nowrap">
+      <LibraryBig className="w-3.5 h-3.5" /> Galeri
+     </button>
+    </div>
     <div className="flex gap-2">
      <label className="text-sm">Rating:</label>
      <select value={form.rating} onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })} className="border rounded-xl px-3 py-1 text-sm">
@@ -144,6 +152,8 @@ export default function AdminTestimonialsPage() {
    </div>
   )}
   </div>
+
+  <MediaPickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm({ ...form, photo: url })} />
  </AdminLayout>
  );
 }
