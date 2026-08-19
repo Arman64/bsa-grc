@@ -1,0 +1,49 @@
+{
+  "summary": "Security-fix regression pass on BSA GRC (Next.js). Ran 15 pytest cases covering admin login, MCP token lifecycle (hash storage, prefix-only listing, revoke/reactivate/delete, MCP API auth), blog markdown link renderer, XSS sanitization of body, media proxy prefix restriction, and admin image upload. Also UI-verified /admin/mcp shows only masked token prefixes (bsagrc_mcp_xxxx...••••) with no reveal button, Cabut/Hapus actions available, and hermes token preserved. 14/15 passed. Discovered ONE NEW stored XSS vulnerability outside the fixed markdown pipeline: excerpt/keywords/description are inlined into <script type=\"application/ld+json\"> via JSON.stringify without escaping the '</' sequence, allowing an authenticated blog writer (or MCP blog:write token holder) to break out of the JSON-LD script tag and inject arbitrary HTML (verified with excerpt='</script><img src=x onerror=alert(777)>' – payload appears raw in DOM outside the LD-JSON script). Same unsafe pattern exists in 5 other pages but only [slug]/page.tsx blog view uses user-controlled fields today.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "GET /{slug} (blog article public page)",
+        "issue": "STORED XSS in JSON-LD structured data. app/[slug]/page.tsx lines 88-89 render <script type=\"application/ld+json\" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} /> where articleSchema.description/keywords/headline come from user-controlled blog excerpt/keywords/title. JSON.stringify does NOT escape '</' inside strings, so a payload containing '</script><img src=x onerror=alert(1)>' in the excerpt breaks out of the script tag and executes as HTML in the visitor's/admin's browser. Reproduced: created blog with excerpt='</script><img src=x onerror=alert(777)>' — payload appears raw in returned HTML at the </script> boundary. Same pattern exists (but with non-user data currently) in app/layout.tsx, app/page.tsx, app/layanan/[slug]/page.tsx, app/portofolio/[id]/page.tsx.",
+        "priority": "CRITICAL"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/security_fix_regression_test.py",
+    "/app/test_reports/pytest/security_fix_results.xml"
+  ],
+  "action_items": [
+    "Fix stored XSS in JSON-LD: sanitize the stringified schema before injection. Simplest fix in app/[slug]/page.tsx (and the other 4 files as defense-in-depth): replace `JSON.stringify(schema)` with `JSON.stringify(schema).replace(/</g, '\\\\u003c').replace(/>/g, '\\\\u003e').replace(/&/g, '\\\\u0026')` or use a helper like `serialize-javascript`. This is the standard mitigation for JSON embedded in <script> blocks. Do NOT rely on sanitize-html in lib/markdown.ts here — that only cleans the rendered HTML body, not the SEO metadata block.",
+    "Consider running the sanitize-html allowlist on excerpt/keywords BEFORE they are used for SEO fields too, or strip HTML tags entirely from excerpt/keywords before persistence."
+  ],
+  "critical_code_review_comments": [
+    "app/[slug]/page.tsx lines 88-89: JSON.stringify inside dangerouslySetInnerHTML without escaping '</' – classic JSON-in-script XSS sink. Same anti-pattern in 4 sibling files.",
+    "app/api/admin/blog/route.ts: excerpt auto-derived from body.content.slice(0,160) preserves raw HTML/script tags; recommend stripping tags before storing OR at rendering time when used as description.",
+    "Positive: lib/tokens.ts hashing (SHA-256), constant-time compare, tokenPrefix-only listing, and TokenPrefixValue component are all cleanly implemented; UI has no reveal path for stored tokens.",
+    "Positive: media proxy prefix restriction is effective (all non-'bsa-grc/' paths return 404) and did NOT break existing blob-served images or new uploads.",
+    "Positive: markdown link renderer now emits proper anchor with maroon-600 (external) / maroon-700 (internal) styling and did not regress headings, tables, lists, bold."
+  ],
+  "updated_files": [
+    "/app/backend/tests/security_fix_regression_test.py (new pytest regression suite for the security fixes)"
+  ],
+  "success_rate": {"backend": "93% (14/15 pytest — the 1 failure is the NEW XSS bug I found, not a regression)", "frontend": "100% (admin login + MCP page UI verified visually)"},
+  "test_credentials": "admin@bsagrc.co.id / BSA@GRC2026! (used, works)",
+  "seed_data_creation": "Created 4 TEST_ blog posts and 1 TEST_ MCP token + 1 test upload, ALL cleaned up. Real 'hermes' MCP token left untouched (verified still present + active + lastUsedAt preserved).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Regression suite lives at /app/backend/tests/security_fix_regression_test.py. Run: `REACT_APP_BACKEND_URL=<url> pytest backend/tests/security_fix_regression_test.py -v`. The `test_xss_in_jsonld_via_excerpt` case is currently EXPECTED-FAIL until main agent fixes the JSON-LD escaping in app/[slug]/page.tsx (and ideally the other four <script type=\"application/ld+json\"> emitters). After the fix, all 15 should pass. Slugs are timestamped so re-runs won't conflict on the unique-slug constraint.",
+  "rca of the issue": {
+    "bug": "Stored XSS via JSON-LD structured data in blog article pages.",
+    "root_cause": "app/[slug]/page.tsx builds `articleSchema` from user-controllable blog fields (title, excerpt, keywords) and injects it into the DOM via `<script type=\"application/ld+json\" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />`. JSON.stringify does not escape the substring '</' inside JSON strings; therefore any string field containing the literal '</script>' terminates the outer <script> tag in the HTML parser and the remainder is parsed as HTML.",
+    "reproduction": "1) POST /api/admin/blog (or /api/mcp/blog with a blog:write token) with body {\"title\":\"x\",\"slug\":\"x\",\"content\":\"safe\",\"excerpt\":\"</script><img src=x onerror=alert(1)>\",\"isPublished\":true}. 2) GET /x. 3) The payload appears verbatim in the DOM and the injected <img> onerror handler executes for any visitor (including admins).",
+    "mitigation": "Escape the JSON before inlining: `const safeJson = JSON.stringify(schema).replace(/</g, '\\\\u003c').replace(/>/g, '\\\\u003e').replace(/&/g, '\\\\u0026').replace(/\\u2028/g, '\\\\u2028').replace(/\\u2029/g, '\\\\u2029');` then use that in dangerouslySetInnerHTML. Apply to all five files that use this pattern. Additionally, strip HTML tags from excerpt/keywords server-side before storage.",
+    "severity": "HIGH — same practical impact as the original stored-XSS finding (auth cookie theft, admin session hijack when a superuser previews the article), and reachable by exactly the same actor (MCP blog:write token holder or any admin editor)."
+  }
+}

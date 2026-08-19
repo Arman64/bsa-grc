@@ -6,7 +6,7 @@ import Link from "next/link";
 import { MapPin, Calendar, Building2, Ruler, Award, CheckCircle2, ArrowLeft, Phone, Clock, Eye, Share2, Star, Quote } from "lucide-react";
 import { COMPANY_INFO } from "@/lib/constants";
 import { getPortfolioData, getPortfolioById, getTestimonialsData } from "@/lib/data";
-import { generateSEOMetadata } from "@/lib/seo";
+import { generateSEOMetadata, safeJsonLd } from "@/lib/seo";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import { PortfolioGrid } from "@/components/ui/PortfolioCard";
@@ -95,7 +95,7 @@ export default async function PortfolioDetailPage({ params }: Props) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(projectSchema) }} />
 
       <div className="min-h-screen bg-white">
         <div className="border-b bg-white sticky top-0 z-30">

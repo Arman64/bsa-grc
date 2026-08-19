@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Calendar, Clock, User, Eye, Tag, ArrowLeft, BookOpen, List, ChevronRight } from "lucide-react";
 import { COMPANY_INFO } from "@/lib/constants";
 import { getBlogData, getBlogBySlug, getPublishedBlogs } from "@/lib/data";
-import { generateSEOMetadata } from "@/lib/seo";
+import { generateSEOMetadata, safeJsonLd } from "@/lib/seo";
 import { generateToc } from "@/lib/markdown";
 import BlogContent from "@/components/sections/BlogContent";
 import Breadcrumb from "@/components/layout/Breadcrumb";
@@ -85,8 +85,8 @@ export default async function BlogDetailPage({ params }: Props) {
 
  return (
  <>
-  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }} />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }} />
 
   <article className="min-h-screen bg-white">
   <header className="py-8 lg:py-12 bg-gradient-to-br from-white to-gold-50/30 border-b">

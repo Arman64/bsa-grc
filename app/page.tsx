@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import nextDynamic from "next/dynamic";
-import { generateSEOMetadata, generateFAQSchema } from "@/lib/seo";
+import { generateSEOMetadata, generateFAQSchema, safeJsonLd } from "@/lib/seo";
 import { getFaqsData } from "@/lib/data";
 import { getPageContentCached, getSettingsCached, waLink } from "@/lib/content";
 import HeroSection from "@/components/sections/HeroSection";
@@ -40,7 +40,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }} />
 
       <HeroSection />
       <StatsSection />

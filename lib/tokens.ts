@@ -1,7 +1,9 @@
 /**
  * BSA GRC - MCP / API token management (Neon table bsa_api_tokens).
+ * SEC: tokens are stored as SHA-256 hashes only - the raw secret is returned once at creation
+ * and never persisted or re-displayed afterward (only a non-reversible prefix is shown in the list).
  */
-import { randomBytes } from "crypto";
+import { randomBytes, createHash, timingSafeEqual } from "crypto";
 import { desc, eq } from "drizzle-orm";
 import { db, isDbEnabled } from "./db";
 import { apiTokens } from "./schema";
@@ -21,10 +23,14 @@ export function generateTokenString(): string {
   return "bsagrc_mcp_" + randomBytes(24).toString("hex");
 }
 
+function hashToken(raw: string): string {
+  return createHash("sha256").update(raw).digest("hex");
+}
+
 export interface ApiTokenRow {
   id: number;
   name: string;
-  token: string;
+  tokenPrefix: string | null;
   permissions: string[];
   expiresAt: Date | null;
   lastUsedAt: Date | null;
@@ -38,24 +44,37 @@ function status(t: any): "active" | "expired" | "revoked" {
   return "active";
 }
 
+/** List tokens WITHOUT the hash - only the safe-to-display prefix is returned. */
 export async function listTokens() {
   const database = ensureDb();
   const rows = await database.select().from(apiTokens).orderBy(desc(apiTokens.createdAt)).execute();
-  return rows.map((r: any) => ({ ...r, status: status(r) }));
+  return rows.map((r: any) => ({
+    id: r.id,
+    name: r.name,
+    tokenPrefix: r.tokenPrefix,
+    permissions: r.permissions,
+    expiresAt: r.expiresAt,
+    lastUsedAt: r.lastUsedAt,
+    revoked: r.revoked,
+    createdAt: r.createdAt,
+    status: status(r),
+  }));
 }
 
 export async function createToken(input: { name: string; permissions: string[]; expiresAt: string | null }) {
   const database = ensureDb();
-  const token = generateTokenString();
+  const rawToken = generateTokenString();
   const values = {
     name: input.name?.trim() || "Token MCP",
-    token,
+    token: hashToken(rawToken),
+    tokenPrefix: rawToken.slice(0, 15) + "...",
     permissions: (input.permissions && input.permissions.length ? input.permissions : ["blog:read", "blog:write"]) as any,
     expiresAt: input.expiresAt ? new Date(input.expiresAt) : null,
     revoked: false,
   };
   const inserted = await database.insert(apiTokens).values(values as any).returning().execute();
-  return inserted[0];
+  // Raw token is only ever returned here, right after creation - caller must copy it now.
+  return { ...inserted[0], token: rawToken };
 }
 
 export async function revokeToken(id: number, revoked = true) {
@@ -75,9 +94,14 @@ export async function validateToken(key: string, requiredPermission: string): Pr
   if (!key) return { ok: false, reason: "no-key" };
   try {
     const database = ensureDb();
-    const rows = await database.select().from(apiTokens).where(eq(apiTokens.token, key)).execute();
+    const incomingHash = hashToken(key);
+    const rows = await database.select().from(apiTokens).where(eq(apiTokens.token, incomingHash)).execute();
     const t: any = rows[0];
     if (!t) return { ok: false, reason: "invalid" };
+    // Constant-time compare as defense-in-depth on top of the indexed hash lookup above.
+    const stored = Buffer.from(t.token, "utf8");
+    const incoming = Buffer.from(incomingHash, "utf8");
+    if (stored.length !== incoming.length || !timingSafeEqual(stored, incoming)) return { ok: false, reason: "invalid" };
     if (t.revoked) return { ok: false, reason: "revoked" };
     if (t.expiresAt && new Date(t.expiresAt).getTime() < Date.now()) return { ok: false, reason: "expired" };
     const perms: string[] = t.permissions || [];

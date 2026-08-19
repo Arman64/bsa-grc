@@ -4,6 +4,7 @@
  */
 import fs from "fs";
 import path from "path";
+import dns from "dns";
 import sharp from "sharp";
 
 export async function storeImageBuffer(
@@ -68,12 +69,47 @@ function safeBaseName(sourceUrl: string): string {
   }
 }
 
+function isPrivateIp(ip: string): boolean {
+  if (ip.includes(":")) {
+    // IPv6: loopback, link-local, unique-local
+    return ip === "::1" || /^fe80:/i.test(ip) || /^fc[0-9a-f]{2}:/i.test(ip) || /^fd[0-9a-f]{2}:/i.test(ip);
+  }
+  const parts = ip.split(".").map(Number);
+  if (parts.length !== 4 || parts.some((n) => Number.isNaN(n))) return true;
+  const [a, b] = parts;
+  if (a === 127 || a === 10 || a === 0) return true;
+  if (a === 169 && b === 254) return true; // link-local + cloud metadata (169.254.169.254)
+  if (a === 172 && b >= 16 && b <= 31) return true;
+  if (a === 192 && b === 168) return true;
+  if (a === 100 && b >= 64 && b <= 127) return true; // shared address space
+  return false;
+}
+
+/** SSRF guard: only allow fetching URLs whose hostname resolves to a public IP. */
+async function isSafeUrlToFetch(urlString: string): Promise<boolean> {
+  try {
+    const u = new URL(urlString);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return false;
+    if (u.hostname === "localhost") return false;
+    const addresses = await dns.promises.lookup(u.hostname, { all: true });
+    if (addresses.length === 0) return false;
+    return addresses.every((a) => !isPrivateIp(a.address));
+  } catch {
+    return false;
+  }
+}
+
 /** Downloads an external image (e.g. old WordPress media) and re-stores it via the storage cascade.
  * Falls back to returning the original URL if download/conversion fails, so import never blocks on one bad image. */
 export async function downloadAndStoreImage(sourceUrl: string, folder = "blog-import"): Promise<string> {
   if (!/^https?:\/\//i.test(sourceUrl)) return sourceUrl;
+  if (!(await isSafeUrlToFetch(sourceUrl))) {
+    console.warn(`SSRF guard: menolak fetch gambar dari host tidak aman: ${sourceUrl}`);
+    return sourceUrl;
+  }
   try {
-    const res = await fetch(sourceUrl, { signal: AbortSignal.timeout(15000) });
+    const res = await fetch(sourceUrl, { signal: AbortSignal.timeout(15000), redirect: "manual" });
+    if (res.status >= 300 && res.status < 400) throw new Error("Redirect ditolak (SSRF guard)");
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const inputBuffer = Buffer.from(await res.arrayBuffer());
     const baseName = safeBaseName(sourceUrl);

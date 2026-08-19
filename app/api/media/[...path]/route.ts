@@ -8,6 +8,11 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest, { params }: { params: { path: string[] } }) {
   const pathname = params.path.join("/");
+  // SEC: only serve blobs under our own upload prefix - prevents this public proxy from being used
+  // to read arbitrary keys if the store is ever reused for other purposes.
+  if (!pathname.startsWith("bsa-grc/") || pathname.includes("..")) {
+    return new NextResponse("Not found", { status: 404 });
+  }
   try {
     const { get } = await import("@vercel/blob");
     const result = await get(pathname, { access: "private" });

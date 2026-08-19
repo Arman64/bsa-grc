@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { COMPANY_INFO } from "@/lib/constants";
 import { getServicesData, getServiceBySlug } from "@/lib/data";
-import { generateSEOMetadata, generateServiceSchema, generateBreadcrumbSchema } from "@/lib/seo";
+import { generateSEOMetadata, generateServiceSchema, generateBreadcrumbSchema, safeJsonLd } from "@/lib/seo";
 import LandingPageService from "@/components/sections/LandingPageService";
 
 type Props = { params: { slug: string } };
@@ -64,9 +64,9 @@ export default async function ServiceLandingPage({ params }: Props) {
 
  return (
  <>
-  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-  {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(serviceSchema) }} />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }} />
+  {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }} />}
 
   <LandingPageService service={service} />
  </>

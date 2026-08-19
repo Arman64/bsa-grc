@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { KeyRound, Plus, Trash2, Copy, Check, Eye, EyeOff, Ban, RotateCcw, Loader2, ShieldCheck, Terminal } from "lucide-react";
+import { KeyRound, Plus, Trash2, Copy, Check, Ban, RotateCcw, Loader2, ShieldCheck, Terminal } from "lucide-react";
 
 const PERMS = [
   { id: "blog:read", label: "Baca Blog (GET /api/mcp/blog)" },
@@ -36,18 +36,8 @@ function CopyBtn({ text }: { text: string }) {
   );
 }
 
-function TokenValue({ value }: { value: string }) {
-  const [show, setShow] = useState(false);
-  const masked = value.slice(0, 11) + "••••••••••••" + value.slice(-4);
-  return (
-    <div className="flex items-center gap-2">
-      <code className="text-xs bg-muted px-2 py-1 rounded font-mono break-all">{show ? value : masked}</code>
-      <button onClick={() => setShow(!show)} className="p-1 hover:bg-muted rounded" aria-label="toggle">
-        {show ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-      </button>
-      <CopyBtn text={value} />
-    </div>
-  );
+function TokenPrefixValue({ prefix }: { prefix: string | null }) {
+  return <code className="text-xs bg-muted px-2 py-1 rounded font-mono break-all">{prefix || "bsagrc_mcp_..."}••••••••••••••••</code>;
 }
 
 export default function McpTokensPage() {
@@ -144,6 +134,7 @@ export default function McpTokensPage() {
           {justCreated && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-4 mt-2">
               <p className="text-sm font-bold text-green-800 flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> Token dibuat — salin & simpan sekarang</p>
+              <p className="text-xs text-green-700/80 mt-1">Demi keamanan, token ini TIDAK akan ditampilkan lagi setelah Anda tutup/refresh halaman ini. Hanya prefix-nya yang tersimpan di daftar bawah.</p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <code className="text-xs bg-white border px-2 py-1.5 rounded font-mono break-all">{justCreated.token}</code>
                 <CopyBtn text={justCreated.token} />
@@ -180,7 +171,7 @@ export default function McpTokensPage() {
                       </button>
                     </div>
                   </div>
-                  <TokenValue value={t.token} />
+                  <TokenPrefixValue prefix={t.tokenPrefix} />
                   <div className="flex flex-wrap gap-x-6 gap-y-1 text-[11px] text-muted-foreground">
                     <span>Kadaluarsa: <b className="text-foreground">{fmt(t.expiresAt)}</b></span>
                     <span>Terakhir dipakai: <b className="text-foreground">{fmt(t.lastUsedAt)}</b></span>

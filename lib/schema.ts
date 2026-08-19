@@ -163,6 +163,7 @@ export const apiTokens = pgTable("bsa_api_tokens", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 200 }).notNull(),
   token: varchar("token", { length: 120 }).notNull().unique(),
+  tokenPrefix: varchar("token_prefix", { length: 40 }),
   permissions: jsonb("permissions").$type<string[]>().notNull().default([]),
   expiresAt: timestamp("expires_at", { withTimezone: true }),
   lastUsedAt: timestamp("last_used_at", { withTimezone: true }),

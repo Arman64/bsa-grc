@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer";
 import ChromeGate from "@/components/layout/ChromeGate";
 import FloatingWhatsApp from "@/components/common/FloatingWhatsApp";
 import { SettingsProvider } from "@/components/providers/SettingsProvider";
-import { generateSEOMetadata, generateLocalBusinessSchema } from "@/lib/seo";
+import { generateSEOMetadata, generateLocalBusinessSchema, safeJsonLd } from "@/lib/seo";
 import { COMPANY_INFO } from "@/lib/constants";
 import { getSiteChromeCached, getSettingsCached } from "@/lib/content";
 
@@ -53,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <link rel="preconnect" href="https://bsagrc.co.id" />
         <link rel="dns-prefetch" href="https://bsagrc.co.id" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(localBusinessSchema) }} />
         <meta name="theme-color" content={appearance.themeColor || "#7A0C10"} />
         <meta name="msapplication-TileColor" content={appearance.themeColor || "#7A0C10"} />
       </head>

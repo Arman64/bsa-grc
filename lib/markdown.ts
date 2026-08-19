@@ -1,4 +1,5 @@
 import { marked } from "marked";
+import sanitizeHtml from "sanitize-html";
 import { slugify } from "./data";
 
 export interface TocItem {
@@ -71,7 +72,6 @@ export function renderMarkdownWithIds(markdown: string): string {
   };
 
   // Custom link renderer - internal links maroon red
-  const originalLink = renderer.link.bind(renderer);
   renderer.link = function (this: any, token: any) {
     let href: string;
     let title: string | null | undefined;
@@ -80,25 +80,21 @@ export function renderMarkdownWithIds(markdown: string): string {
     if (typeof token === "object" && token !== null && "href" in token) {
       href = token.href;
       title = token.title;
-      text = token.text;
+      text = token.tokens ? this.parser.parseInline(token.tokens) : token.text || "";
     } else {
       href = token;
       title = arguments[1];
       text = arguments[2];
     }
 
-    const html = originalLink.call(this, { href, title, text } as any);
-    
     // Check if internal link (bsagrc.co.id or starts with /)
     const isInternal = href.includes("bsagrc.co.id") || href.startsWith("/") || href.startsWith("#") || (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("tel:"));
-    
-    if (isInternal) {
-      // Add maroon color class for internal links
-      return html.replace('<a ', '<a class="text-maroon-700 font-semibold hover:text-gold-600 underline decoration-maroon-200 hover:decoration-gold-400 underline-offset-4 transition-colors" ');
-    }
-    
-    // External links
-    return html.replace('<a ', '<a class="text-maroon-600 hover:text-maroon-800 underline decoration-gold-200 hover:decoration-maroon-300 underline-offset-4 transition-colors" ');
+    const cls = isInternal
+      ? "text-maroon-700 font-semibold hover:text-gold-600 underline decoration-maroon-200 hover:decoration-gold-400 underline-offset-4 transition-colors"
+      : "text-maroon-600 hover:text-maroon-800 underline decoration-gold-200 hover:decoration-maroon-300 underline-offset-4 transition-colors";
+    const titleAttr = title ? ` title="${title}"` : "";
+
+    return `<a href="${href}"${titleAttr} class="${cls}">${text}</a>`;
   };
 
   // Custom table renderer - attractive table
@@ -138,6 +134,24 @@ export function renderMarkdownWithIds(markdown: string): string {
 
   // Paragraph spacing
   html = html.replace(/<p>/g, '<p class="my-4 leading-relaxed text-[15px]">');
+
+  // SEC: sanitize final HTML - blocks stored XSS from untrusted article content (e.g. via MCP tokens)
+  // while still allowing all the custom classes/ids/hrefs injected above.
+  html = sanitizeHtml(html, {
+    allowedTags: [
+      "p", "br", "hr", "strong", "em", "b", "i", "u", "s", "del", "sub", "sup",
+      "a", "ul", "ol", "li", "h1", "h2", "h3", "h4", "h5", "h6",
+      "blockquote", "code", "pre", "span", "div",
+      "table", "thead", "tbody", "tr", "th", "td", "img",
+    ],
+    allowedAttributes: {
+      a: ["href", "title", "class"],
+      img: ["src", "alt", "title", "width", "height", "class"],
+      "*": ["class", "id"],
+    },
+    allowedSchemes: ["http", "https", "mailto", "tel"],
+    disallowedTagsMode: "discard",
+  });
 
   return html;
 }
