@@ -15,10 +15,13 @@ export async function storeImageBuffer(
   const hasVercelBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
   if (hasVercelBlob) {
     try {
+      // Store "bsa-grc-media" is Private-access-mode (created via Vercel dashboard) - access:"public" is
+      // rejected on private stores, so we upload as private and serve bytes ourselves via /api/media/[...path]
+      // (see app/api/media/[...path]/route.ts), which streams the blob using the same OIDC-injected token.
       const { put } = await import("@vercel/blob");
       const blobPath = `bsa-grc/${safeFolder}/${fileName}`;
-      const blob = await put(blobPath, buffer, { access: "public", contentType, addRandomSuffix: false });
-      return { url: blob.url, storageType: "vercel-blob" };
+      await put(blobPath, buffer, { access: "private", contentType, addRandomSuffix: false });
+      return { url: `/api/media/${blobPath}`, storageType: "vercel-blob" };
     } catch (e) {
       console.error("Vercel Blob upload failed, trying next fallback:", e);
     }
