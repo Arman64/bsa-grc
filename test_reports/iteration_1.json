@@ -1,0 +1,42 @@
+{
+  "summary": "Comprehensive backend + frontend testing of the rebuilt BSA GRC WordPress-style admin. 18/18 pytest cases pass and full Playwright walk-through of admin flows succeeds. Core save→reflect flow (hero UJITITLE1 on / homepage) verified end-to-end and reverted to 'Kontraktor'. Appearance topbar 'UJITOPBAR' verified end-to-end and reverted. Menus (6/6 items), Integrations (GA G-TEST123), and Account validation (wrong-current + mismatch messages) all pass. All 6 existing CRUD admin pages render 200 with no errors. Public pages (/, /profil, /layanan, /portofolio, /kontak, /blog) return 200 and contain none of the forbidden placeholder strings; hero highlight is 'Terbaik'. Contact form POST returns success with wa.me link.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "lib/cms.ts::ensureAdminSeed", "issue": "Seed function only inserts when table empty and NEVER updates an existing admin's password to match ADMIN_PASSWORD env. If the DB password diverges from env (e.g., a prior test changed it), login silently breaks even though env still lists the intended password. Per auth playbook, seed_admin should update-if-changed. Testing agent had to manually reset the admin password_hash in bsa_admin_users to bcrypt('BSA@GRC2026!') to unblock tests."},
+      {"endpoint": "/api/admin/change-password", "issue": "confirmPassword is only checked client-side; server accepts any request where currentPassword matches, regardless of confirmPassword. Low-risk (UI validates), but server should reject mismatch defensively."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/admin/appearance (Logo Header field)", "issues": ["Next.js console warning: <Image> for the header logo has width OR height set but not both — should also set the CSS style width:auto / height:auto to preserve aspect ratio."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_bsa_admin.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Make ensureAdminSeed() upsert / update password when env ADMIN_PASSWORD differs from the DB hash so a stray password change cannot lock out admin. (This is called out in the auth_testing playbook.)",
+    "Add server-side confirmPassword check inside /api/admin/change-password (defence in depth).",
+    "Add missing width/height (or width:auto/height:auto) styles on the header logo <Image> in Header.tsx / appearance preview to silence the Next Image aspect-ratio warning."
+  ],
+  "critical_code_review_comments": [
+    "ensureAdminSeed only inserts on empty table — no self-healing if DB drifts. Combined with a working /api/admin/change-password, an accidental password change is unrecoverable without direct DB access.",
+    "/api/admin/change-password does not validate confirmPassword server-side; UI is currently the only guard.",
+    "Public pages set Cache-Control via lib/content.ts force no-store which is good and confirmed by save→reflect working within ~1s of admin save.",
+    "Login endpoint correctly implements bcrypt ($2b$) + jose JWT httpOnly cookie + IP+email brute-force lockout with 5-attempt / 15-min policy (verified: pw hash prefix $2b$, bsa_login_attempts row incremented on failure)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_bsa_admin.py (new pytest suite)"
+  ],
+  "success_rate": {"backend": "100% (18/18)", "frontend": "100% (all critical flows passed)"},
+  "test_credentials": "admin@bsagrc.co.id / BSA@GRC2026! (restored by testing agent; DB was drifted before test run)",
+  "seed_data_creation": "None — tests are revertible: hero title reset to 'Kontraktor', topbar reset to 'Pengalaman 10+ Tahun • 500+ Proyek Selesai', SEO test fields cleared, GA id cleared, admin password reset to BSA@GRC2026!, bsa_login_attempts cleared.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend tests live in /app/backend/tests/test_bsa_admin.py — 18 cases, all currently green. They cover auth protection, /api/admin/{me,page-content,chrome,settings,change-password}, page save→reflect on /, forbidden-string sweep on all 6 public pages, hero-highlight 'Terbaik' check, and contact form. IMPORTANT: this app has NO seed-on-drift for admin password — if you see login 401 with the documented password, reset the bsa_admin_users.password_hash directly in Neon (bcryptjs 10 rounds) and clear bsa_login_attempts before retrying, and please flag the ensureAdminSeed bug again.",
+  "rca of the issue": "Root cause of the initial login failure encountered during testing: bsa_admin_users had a password_hash whose bcrypt did not match ADMIN_PASSWORD env. Since ensureAdminSeed only inserts on empty table, it never repaired the drift. Mitigation applied: manual bcrypt(10) rehash of 'BSA@GRC2026!' written back to bsa_admin_users.password_hash and bsa_login_attempts truncated. Long-term fix: ensureAdminSeed should update the password when the stored hash does not verify against ADMIN_PASSWORD (see auth playbook)."
+}

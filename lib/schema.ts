@@ -45,7 +45,29 @@ export const settings = pgTable("bsa_settings", {
   hero: jsonb("hero").$type<any>().notNull(),
   usp: jsonb("usp").$type<any[]>(),
   seo: jsonb("seo").$type<any>(),
+  appearance: jsonb("appearance").$type<any>(),
+  navigation: jsonb("navigation").$type<any>(),
+  integrations: jsonb("integrations").$type<any>(),
+  footer: jsonb("footer").$type<any>(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const adminUsers = pgTable("bsa_admin_users", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 200 }).notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  name: varchar("name", { length: 200 }).default("Administrator"),
+  role: varchar("role", { length: 50 }).default("admin").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});
+
+export const loginAttempts = pgTable("bsa_login_attempts", {
+  id: serial("id").primaryKey(),
+  identifier: varchar("identifier", { length: 300 }).notNull().unique(),
+  attempts: integer("attempts").default(0).notNull(),
+  lockedUntil: timestamp("locked_until", { withTimezone: true }),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
 export const blogs = pgTable("bsa_blogs", {

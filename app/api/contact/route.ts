@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { validateContactForm, type ContactFormData, type WebhookPayload } from "@/lib/validations";
 import { COMPANY_INFO } from "@/lib/constants";
 import { getSettingsData } from "@/lib/data";
+import { getSiteChrome } from "@/lib/cms";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,7 +53,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
    url: request.headers.get("referer") || COMPANY_INFO.website,
   };
 
-  const webhookUrl = process.env.WEBHOOK_URL || process.env.NEXT_PUBLIC_WEBHOOK_URL;
+  let webhookUrl = process.env.WEBHOOK_URL || process.env.NEXT_PUBLIC_WEBHOOK_URL || "";
+  if (!webhookUrl) {
+   try {
+    const chrome = await getSiteChrome();
+    webhookUrl = chrome.integrations?.webhookUrl || "";
+   } catch {}
+  }
 
   if (webhookUrl) {
    try {

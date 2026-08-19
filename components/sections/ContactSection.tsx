@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageCircle, AlertCircle, ExternalLink } from "lucide-react";
 import { COMPANY_INFO } from "@/lib/constants";
+import { KONTAK_DEFAULT } from "@/lib/content-defaults";
 import Button from "@/components/ui/Button";
 import type { ContactFormData } from "@/lib/validations";
 
@@ -24,7 +25,9 @@ interface MapSettings {
   address: string;
 }
 
-export default function ContactSection() {
+export default function ContactSection({ content }: { content?: any }) {
+  const info = { ...KONTAK_DEFAULT.info, ...(content?.info || {}) };
+  const formCopy = { ...KONTAK_DEFAULT.form, ...(content?.form || {}) };
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -144,13 +147,13 @@ export default function ContactSection() {
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 bg-maroon-50 border border-maroon-100 text-maroon-700 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Gratis Konsultasi & Survey
+                {info.badge}
               </div>
-              <h1 className="text-3xl lg:text-4xl font-bold leading-tight tracking-tight">
-                Hubungi Tim <span className="text-maroon-700">BSA GRC</span> Sekarang
+              <h1 className="text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-foreground">
+                {info.title}
               </h1>
               <p className="text-muted-foreground leading-relaxed">
-                Tim BSA GRC siap membantu proyek masjid Anda di seluruh Indonesia. Konsultasi desain kustom, estimasi harga, dan survey lokasi gratis. Respon &lt;5 menit.
+                {info.description}
               </p>
             </div>
 
@@ -196,7 +199,7 @@ export default function ContactSection() {
                 <div className="p-4 bg-white rounded-xl border shadow-soft">
                   <Clock className="w-5 h-5 text-maroon-600 mb-2" />
                   <p className="text-xs text-muted-foreground uppercase tracking-wide">Jam Kerja</p>
-                  <p className="text-sm font-semibold text-foreground mt-1">Senin - Sabtu 08:00-17:00</p>
+                  <p className="text-sm font-semibold text-foreground mt-1">{info.workingHours}</p>
                 </div>
               </div>
             </div>
@@ -222,8 +225,8 @@ export default function ContactSection() {
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-maroon-700 via-gold-400 to-maroon-700" />
 
             <div className="mb-6">
-              <h2 className="font-bold text-xl text-foreground">Form Penawaran Proyek</h2>
-              <p className="text-sm text-muted-foreground mt-2">Isi form, tim kami akan hubungi via WhatsApp. Data aman, langsung ke webhook CRM (n8n automation ready).</p>
+              <h2 className="font-bold text-xl text-foreground">{formCopy.title}</h2>
+              <p className="text-sm text-muted-foreground mt-2">{formCopy.subtitle}</p>
             </div>
 
             {isSuccess ? (
@@ -337,7 +340,7 @@ export default function ContactSection() {
                 </button>
 
                 <p className="text-[11px] text-center text-muted-foreground leading-relaxed">
-                  Aman & tidak spam. Data dikirim ke CRM via webhook <code className="bg-muted px-1 rounded">/api/contact</code> → n8n automation ready. Fallback langsung ke WhatsApp.
+                  Data Anda aman & tidak akan disebarkan. Tim BSA GRC akan menghubungi Anda via WhatsApp.
                 </p>
               </form>
             )}

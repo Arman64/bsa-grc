@@ -16,7 +16,9 @@ let db: ReturnType<typeof drizzle> | null = null;
 
 if (databaseUrl) {
   try {
-    const sql = neon(databaseUrl);
+    // fetchOptions cache:no-store prevents Next.js from caching DB reads,
+    // so admin edits reflect on the public site instantly (no stale content).
+    const sql = neon(databaseUrl, { fetchOptions: { cache: "no-store" } });
     db = drizzle(sql);
   } catch (error) {
     console.error("Failed to create Neon client, fallback to JSON:", error);

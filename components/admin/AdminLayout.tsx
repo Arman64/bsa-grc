@@ -1,122 +1,127 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import Image from "next/image";
-import { LayoutDashboard, Images, Briefcase, Settings, LogOut, Menu, X, Home, FileText, Building2, BookOpen, Star, HelpCircle, Layers, Image as ImageIcon } from "lucide-react";
-import { COMPANY_INFO } from "@/lib/constants";
+import {
+  LayoutDashboard, Layers, Briefcase, Images, BookOpen, Star, HelpCircle,
+  Image as ImageIcon, Palette, Menu as MenuIcon, Settings, Globe, UserCog,
+  LogOut, ExternalLink, X, ChevronRight,
+} from "lucide-react";
 
-const menuItems = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Halaman", href: "/admin/pages", icon: Layers, badge: "Edit Teks & Gambar" },
-  { label: "Media Library", href: "/admin/media", icon: ImageIcon, badge: "Kelola Gambar" },
-  { label: "Portofolio", href: "/admin/portfolio", icon: Images, badge: "Gambar" },
-  { label: "Layanan", href: "/admin/services", icon: Briefcase, badge: "5 Layanan" },
-  { label: "Blog Artikel", href: "/admin/blog", icon: BookOpen, badge: "SEO + MCP" },
-  { label: "Testimoni", href: "/admin/testimonials", icon: Star, badge: "Sosial Proof" },
-  { label: "FAQ", href: "/admin/faqs", icon: HelpCircle, badge: "Tanya Jawab" },
-  { label: "Pengaturan", href: "/admin/settings", icon: Settings, badge: "Teks & Kontak" },
+const MENU = [
+  {
+    group: "Utama",
+    items: [{ label: "Dashboard", href: "/admin", icon: LayoutDashboard }],
+  },
+  {
+    group: "Konten",
+    items: [
+      { label: "Halaman", href: "/admin/pages", icon: Layers },
+      { label: "Layanan", href: "/admin/services", icon: Briefcase },
+      { label: "Portofolio", href: "/admin/portfolio", icon: Images },
+      { label: "Blog", href: "/admin/blog", icon: BookOpen },
+      { label: "Testimoni", href: "/admin/testimonials", icon: Star },
+      { label: "FAQ", href: "/admin/faqs", icon: HelpCircle },
+      { label: "Media", href: "/admin/media", icon: ImageIcon },
+    ],
+  },
+  {
+    group: "Tampilan",
+    items: [
+      { label: "Logo & Tampilan", href: "/admin/appearance", icon: Palette },
+      { label: "Menu Navigasi", href: "/admin/menus", icon: MenuIcon },
+    ],
+  },
+  {
+    group: "Sistem",
+    items: [
+      { label: "Pengaturan Umum", href: "/admin/settings", icon: Settings },
+      { label: "SEO & Integrasi", href: "/admin/integrations", icon: Globe },
+      { label: "Akun & Password", href: "/admin/account", icon: UserCog },
+    ],
+  },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
- const pathname = usePathname();
- const router = useRouter();
- const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [me, setMe] = useState<{ name?: string; email?: string }>({});
 
- const handleLogout = async () => {
- await fetch("/api/admin/logout", { method: "POST" });
- router.push("/admin/login");
- router.refresh();
- };
+  useEffect(() => {
+    fetch("/api/admin/me").then((r) => r.json()).then((j) => { if (j.success) setMe(j.user); }).catch(() => {});
+  }, []);
 
- return (
- <div className="min-h-screen bg-muted/40 flex">
-  {/* Sidebar - Desktop */}
-  <aside className={`fixed lg:sticky top-0 left-0 z-40 h-screen w-72 bg-maroon-950 text-white flex flex-col transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
-  <div className="p-6 border-b border-white/10">
-   <Link href="/admin" className="flex items-center gap-3">
-   <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden">
-    <Image src="https://bsagrc.co.id/wp-content/uploads/2023/10/logo-BSA-GRC.png" alt="BSA" width={36} height={36} className="object-contain" />
-   </div>
-   <div>
-    <p className="font-bold leading-none">BSA <span className="text-gold-400">GRC</span></p>
-    <p className="text-[11px] text-white/50 tracking-widest uppercase mt-1">Admin Panel</p>
-   </div>
-   </Link>
-  </div>
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.push("/admin/login");
+    router.refresh();
+  };
 
-  <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-   <p className="text-[11px] text-white/40 uppercase tracking-widest font-semibold px-3 mb-3 mt-2">Menu Utama</p>
-   {menuItems.map((item) => {
-   const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
-   return (
-    <Link
-    key={item.href}
-    href={item.href}
-    onClick={() => setSidebarOpen(false)}
-    className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
-     isActive ? "bg-white text-maroon-900 shadow-soft" : "text-white/70 hover:text-white hover:bg-white/10"
-    }`}
-    >
-    <item.icon className={`w-5 h-5 ${isActive ? "text-maroon-700" : "text-gold-400"}`} />
-    <span className="flex-1">{item.label}</span>
-    {item.badge && (
-     <span className={`text-[10px] px-2 py-0.5 rounded-full ${isActive ? "bg-maroon-100 text-maroon-700" : "bg-white/10 text-white/60"}`}>
-     {item.badge}
-     </span>
-    )}
-    </Link>
-   );
-   })}
+  const isActive = (href: string) => (href === "/admin" ? pathname === "/admin" : pathname.startsWith(href));
 
-   <div className="pt-6 mt-6 border-t border-white/10 space-y-1">
-   <p className="text-[11px] text-white/40 uppercase tracking-widest font-semibold px-3 mb-3">Website</p>
-   <Link href="/" target="_blank" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors">
-    <Home className="w-5 h-5" /> Lihat Website
-   </Link>
-   <Link href="/portofolio" target="_blank" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors">
-    <FileText className="w-5 h-5" /> Portofolio Publik
-   </Link>
-   </div>
-  </nav>
+  return (
+    <div className="min-h-screen bg-[#f3ede6]">
+      {/* Admin Bar */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-12 bg-maroon-950 text-white flex items-center justify-between px-3 lg:px-4 shadow-lg">
+        <div className="flex items-center gap-2">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden p-2 rounded-lg hover:bg-white/10" aria-label="Menu">
+            {sidebarOpen ? <X className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
+          </button>
+          <Link href="/admin" className="flex items-center gap-2 font-bold">
+            <span className="w-7 h-7 rounded-lg bg-gold-400 text-maroon-900 flex items-center justify-center text-xs font-extrabold">BSA</span>
+            <span className="hidden sm:inline">BSA <span className="text-gold-400">GRC</span></span>
+          </Link>
+          <Link href="/" target="_blank" className="ml-2 flex items-center gap-1.5 text-xs bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg transition-colors" data-testid="admin-view-site">
+            <ExternalLink className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Lihat Situs</span>
+          </Link>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="hidden sm:inline text-xs text-white/70">Halo, <b className="text-white">{me.name || "Admin"}</b></span>
+          <button onClick={handleLogout} className="flex items-center gap-1.5 text-xs bg-white/10 hover:bg-red-500/30 px-2.5 py-1.5 rounded-lg transition-colors" data-testid="admin-logout">
+            <LogOut className="w-3.5 h-3.5" /> Keluar
+          </button>
+        </div>
+      </div>
 
-  <div className="p-4 border-t border-white/10">
-   <div className="bg-white/10 rounded-xl p-3 flex items-center gap-3 mb-3">
-   <div className="w-9 h-9 rounded-full bg-gold-400 text-maroon-900 flex items-center justify-center font-bold text-sm">A</div>
-   <div className="flex-1 min-w-0">
-    <p className="text-sm font-semibold truncate">Admin BSA GRC</p>
-    <p className="text-xs text-white/50 truncate">admin@bsagrc.co.id</p>
-   </div>
-   </div>
-   <button
-   onClick={handleLogout}
-   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/70 hover:text-white hover:bg-red-500/20 transition-colors"
-   >
-   <LogOut className="w-5 h-5" /> Keluar
-   </button>
-   <p className="text-[11px] text-white/30 text-center mt-4">© {new Date().getFullYear()} BSA GRC • {COMPANY_INFO.address.regency}</p>
-  </div>
-  </aside>
+      <div className="flex pt-12">
+        {/* Sidebar */}
+        <aside className={`fixed lg:sticky top-12 left-0 z-40 h-[calc(100vh-3rem)] w-64 bg-maroon-900 text-white flex flex-col transition-transform duration-300 overflow-y-auto ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
+          <nav className="flex-1 p-3 space-y-5">
+            {MENU.map((section) => (
+              <div key={section.group}>
+                <p className="text-[10px] text-gold-300/70 uppercase tracking-widest font-bold px-3 mb-2">{section.group}</p>
+                <div className="space-y-0.5">
+                  {section.items.map((item) => {
+                    const active = isActive(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setSidebarOpen(false)}
+                        data-testid={`admin-nav-${item.href.replace(/\//g, "-")}`}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${active ? "bg-gold-400 text-maroon-900 shadow" : "text-white/75 hover:text-white hover:bg-white/10"}`}
+                      >
+                        <item.icon className={`w-[18px] h-[18px] ${active ? "text-maroon-900" : "text-gold-400"}`} />
+                        <span className="flex-1">{item.label}</span>
+                        {active && <ChevronRight className="w-4 h-4" />}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
+          <div className="p-4 border-t border-white/10 text-[11px] text-white/40">
+            © {new Date().getFullYear()} BSA GRC Admin
+          </div>
+        </aside>
 
-  {/* Overlay Mobile */}
-  {sidebarOpen && <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />}
+        {sidebarOpen && <div className="fixed inset-0 top-12 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />}
 
-  {/* Main */}
-  <div className="flex-1 flex flex-col min-h-screen">
-  {/* Topbar Mobile */}
-  <header className="lg:hidden sticky top-0 z-20 bg-white border-b px-4 py-3 flex items-center justify-between">
-   <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-xl bg-muted">
-   {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-   </button>
-   <div className="flex items-center gap-2 font-bold">
-   BSA <span className="text-gold-600">GRC</span> Admin
-   </div>
-   <div className="w-9" />
-  </header>
-
-  <main className="flex-1 p-4 lg:p-8">{children}</main>
-  </div>
- </div>
- );
+        <main className="flex-1 min-w-0 p-4 lg:p-8">{children}</main>
+      </div>
+    </div>
+  );
 }

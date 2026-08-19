@@ -1,27 +1,28 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { AUTH_COOKIE_NAME, verifySession } from "@/lib/jwt";
 
-const ADMIN_SESSION_COOKIE = "bsa_admin_session";
-
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
+  const valid = token ? await verifySession(token) : null;
 
-  // Only protect /admin routes except /admin/login
+  // Protect /admin (except login)
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-
-    if (!token) {
+    if (!valid) {
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  // Also protect /api/admin except login
-  if (pathname.startsWith("/api/admin") && !pathname.startsWith("/api/admin/login")) {
-    const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-
-    if (!token) {
+  // Protect /api/admin (except login/logout)
+  if (
+    pathname.startsWith("/api/admin") &&
+    !pathname.startsWith("/api/admin/login") &&
+    !pathname.startsWith("/api/admin/logout")
+  ) {
+    if (!valid) {
       return NextResponse.json({ success: false, message: "Unauthorized - Silakan login admin" }, { status: 401 });
     }
   }

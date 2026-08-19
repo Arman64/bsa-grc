@@ -1,74 +1,32 @@
 /**
- * BSA GRC - Simple Admin Auth
- * Production-ready minimal auth - ENV based
- * No any, Strict TypeScript
+ * BSA GRC - Admin session helpers (Node / server components + route handlers).
+ * Password hashing & user lookup live in lib/cms.ts. JWT in lib/jwt.ts.
  */
-
 import { cookies } from "next/headers";
-
-const ADMIN_SESSION_COOKIE = "bsa_admin_session";
-const SESSION_MAX_AGE = 60 * 60 * 8; // 8 hours
+import { AUTH_COOKIE_NAME, SESSION_MAX_AGE, signSession, verifySession, type SessionPayload } from "./jwt";
 
 export interface AdminUser {
+  id: string;
   email: string;
   name: string;
-  role: "admin";
-  loginAt: string;
-}
-
-export function getAdminCredentials(): { email: string; password: string } {
-  // Default credentials - should be set via ENV in production
-  return {
-    email: process.env.ADMIN_EMAIL || "admin@bsagrc.co.id",
-    password: process.env.ADMIN_PASSWORD || "BSA@GRC2026!",
-  };
-}
-
-export function createSessionToken(user: AdminUser): string {
-  // Simple base64 encoded token (for production use JWT with secret)
-  const payload = {
-    ...user,
-    exp: Date.now() + SESSION_MAX_AGE * 1000,
-  };
-  const secret = process.env.ADMIN_SESSION_SECRET || "bsa-grc-super-secret-key-2026-trenggalek";
-  // Simple HMAC-like encoding (not cryptographically secure but functional for demo)
-  const token = Buffer.from(JSON.stringify(payload)).toString("base64") + "." + Buffer.from(secret).toString("base64").slice(0, 16);
-  return token;
-}
-
-export function verifySessionToken(token: string): AdminUser | null {
-  try {
-    const [payloadB64] = token.split(".");
-    const payload = JSON.parse(Buffer.from(payloadB64, "base64").toString("utf-8")) as AdminUser & { exp: number };
-    if (payload.exp < Date.now()) return null;
-    return { email: payload.email, name: payload.name, role: payload.role, loginAt: payload.loginAt };
-  } catch {
-    return null;
-  }
+  role: string;
 }
 
 export async function getSession(): Promise<AdminUser | null> {
-  const cookieStore = cookies();
-  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+  const token = cookies().get(AUTH_COOKIE_NAME)?.value;
   if (!token) return null;
-  return verifySessionToken(token);
+  const payload = await verifySession(token);
+  if (!payload) return null;
+  return { id: payload.sub, email: payload.email, name: payload.name, role: payload.role };
 }
 
-export async function createSession(user: AdminUser): Promise<void> {
-  const token = createSessionToken(user);
-  const cookieStore = cookies();
-  cookieStore.set(ADMIN_SESSION_COOKIE, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: SESSION_MAX_AGE,
-    path: "/",
-  });
+export async function createSessionCookie(user: AdminUser): Promise<string> {
+  const payload: SessionPayload = { sub: String(user.id), email: user.email, name: user.name, role: user.role };
+  return await signSession(payload);
 }
 
 export async function deleteSession(): Promise<void> {
-  const cookieStore = cookies();
-  cookieStore.delete(ADMIN_SESSION_COOKIE);
+  cookies().delete(AUTH_COOKIE_NAME);
 }
 
-export const AUTH_COOKIE_NAME = ADMIN_SESSION_COOKIE;
+export { AUTH_COOKIE_NAME, SESSION_MAX_AGE };

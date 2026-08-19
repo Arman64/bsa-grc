@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { COMPANY_INFO } from "@/lib/constants";
-import { generateSEOMetadata } from "@/lib/seo";
+import { getPageContentCached, buildPageMetadata } from "@/lib/content";
 import ContactSection from "@/components/sections/ContactSection";
 
-export const metadata: Metadata = generateSEOMetadata({
- title: "Kontak - Konsultasi Gratis Kubah GRC, Menara & Ornamen",
- description: `Hubungi BSA GRC - Gratis desain, konsultasi & survey. WhatsApp ${COMPANY_INFO.contact.whatsappDisplay}. Pabrik ${COMPANY_INFO.address.full}. Respon cepat <5 menit. Form webhook n8n ready.`,
- url: `${COMPANY_INFO.website}/kontak`,
-});
+export const dynamic = "force-dynamic";
 
-export default function KontakPage() {
- return <ContactSection />;
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPageMetadata("kontak", "/kontak");
+}
+
+export default async function KontakPage() {
+  const content = await getPageContentCached("kontak");
+  return <ContactSection content={content.sections} />;
 }

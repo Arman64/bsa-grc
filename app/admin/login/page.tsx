@@ -104,7 +104,7 @@ export default function AdminLoginPage() {
    </div>
    )}
 
-   <form onSubmit={handleSubmit} className="space-y-5">
+   <form onSubmit={handleSubmit} className="space-y-5" data-testid="admin-login-form">
    <div>
     <label className="text-sm font-semibold mb-2 block">Email Admin</label>
     <div className="relative">
@@ -115,6 +115,7 @@ export default function AdminLoginPage() {
      onChange={(e) => setEmail(e.target.value)}
      placeholder="admin@bsagrc.co.id"
      required
+     data-testid="login-email-input"
      className="w-full pl-10 pr-4 py-3 rounded-xl border border-border focus:border-maroon-500 focus:ring-2 focus:ring-maroon-200 outline-none text-sm"
     />
     </div>
@@ -130,6 +131,7 @@ export default function AdminLoginPage() {
      onChange={(e) => setPassword(e.target.value)}
      placeholder="Masukkan password"
      required
+     data-testid="login-password-input"
      className="w-full pl-10 pr-11 py-3 rounded-xl border border-border focus:border-maroon-500 focus:ring-2 focus:ring-maroon-200 outline-none text-sm"
     />
     <button
@@ -145,6 +147,7 @@ export default function AdminLoginPage() {
    <button
     type="submit"
     disabled={isLoading}
+    data-testid="login-submit-btn"
     className="w-full bg-maroon-700 hover:bg-maroon-800 text-white font-bold py-3.5 rounded-xl shadow-maroon hover:shadow-large hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:translate-y-0"
    >
     {isLoading ? (
