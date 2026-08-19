@@ -18,7 +18,7 @@ const amiri = Amiri({ subsets: ["arabic", "latin"], weight: ["400"], variable: "
 export async function generateMetadata(): Promise<Metadata> {
   let favicon = "https://bsagrc.co.id/wp-content/uploads/2023/10/Favicon.png";
   let logo = COMPANY_INFO.contact.whatsapp ? "https://bsagrc.co.id/wp-content/uploads/2023/10/logo-BSA-GRC.png" : "";
-  let desc = COMPANY_INFO.description;
+  let desc: string = COMPANY_INFO.description;
   try {
     const [chrome, settings] = await Promise.all([getSiteChromeCached(), getSettingsCached().catch(() => null)]);
     favicon = chrome.appearance.favicon || favicon;

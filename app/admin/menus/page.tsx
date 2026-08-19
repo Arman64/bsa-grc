@@ -73,7 +73,7 @@ export default function MenusPage() {
         </div>
 
         <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-xl px-4 py-3 text-sm flex gap-2">
-          <Info className="w-4 h-4 mt-0.5 flex-shrink-0" /> Centang "Dropdown Layanan" pada satu menu agar menampilkan daftar layanan otomatis.
+          <Info className="w-4 h-4 mt-0.5 flex-shrink-0" /> Centang <b>Dropdown Layanan</b> pada satu menu agar menampilkan daftar layanan otomatis.
         </div>
 
         {msg && <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">{msg}</div>}

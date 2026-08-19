@@ -7,8 +7,6 @@
  * always fully rendered (defaults) AND fully editable (admin overrides).
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export const LOGO_MAIN = "https://bsagrc.co.id/wp-content/uploads/2023/10/logo-BSA-GRC.png";
 export const LOGO_FOOTER = "https://bsagrc.co.id/wp-content/uploads/2023/10/logo-BSA-GRC-F.png";
 export const FAVICON = "https://bsagrc.co.id/wp-content/uploads/2023/10/Favicon.png";

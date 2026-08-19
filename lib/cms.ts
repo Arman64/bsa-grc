@@ -2,7 +2,6 @@
  * BSA GRC - CMS data layer (page content + site chrome + admin users)
  * Neon Postgres only, all tables prefixed `bsa_`.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";

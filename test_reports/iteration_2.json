@@ -1,0 +1,34 @@
+{
+  "summary": "Regression run after Vercel build-failure fixes (eslint-disable removals in lib/cms.ts & lib/content-defaults.ts, unescaped-quote fix in app/admin/menus/page.tsx, String(user.id) TS fix in app/api/admin/login/route.ts, and desc:string in app/layout.tsx). Re-ran the existing 18-case pytest suite /app/backend/tests/test_bsa_admin.py — 18/18 PASS. Additionally verified via Playwright: admin login (1 correct attempt, no wrong-password attempts consumed by UI test), /api/admin/me works with cookie, /admin/menus loads without runtime errors and renders all 6 header menu items and the info banner containing the previously-broken quoted-word (now <b>Dropdown Layanan</b>). Public homepage save->reflect verified inside pytest with revert back to 'Kontraktor'. All 6 public pages return 200 with none of the forbidden placeholder strings. No new bugs introduced by the build fixes.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "lib/cms.ts::ensureAdminSeed", "issue": "Still only inserts on empty table — no self-heal when ADMIN_PASSWORD env drifts from DB hash. Same finding as iteration_1; not caused by this build fix but worth reiterating."},
+      {"endpoint": "/api/admin/change-password", "issue": "confirmPassword still not validated server-side (UI-only). Same finding as iteration_1."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Header logo <Image>", "issues": ["Next.js console warning persists: width or height set but not both (add width:auto/height:auto CSS). Pre-existing, not from this build fix."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_bsa_admin.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Build-failure fixes are correct and non-regressive: String(user.id) properly bridges AdminUserRow.id (number) -> AdminUser.id (string) for JWT payload; desc: string typing in generateMetadata is fine; <b> substitution in menus admin page renders as expected; removing @typescript-eslint/no-explicit-any eslint-disable comments is safe since next/core-web-vitals config doesn't load that rule.",
+    "Carryover items from iteration_1 (ensureAdminSeed drift self-heal, server-side confirmPassword check, header <Image> aspect-ratio styles) are unchanged and still open."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (18/18)", "frontend": "100% (login + /admin/menus + public save/reflect)"},
+  "test_credentials": "admin@bsagrc.co.id / BSA@GRC2026! — login succeeded on first attempt (no reset needed this run).",
+  "seed_data_creation": "None. Pytest edits hero titleLine1 to UJITITLE1 and reverts to 'Kontraktor' within the same test; site left in clean state.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Regression suite lives at /app/backend/tests/test_bsa_admin.py (18 cases, all green). BASE_URL is hardcoded to the preview URL. If a future run sees login 401 with the documented password, DB drift is the likely culprit — reset bsa_admin_users.password_hash to bcryptjs(10) of BSA@GRC2026! and TRUNCATE bsa_login_attempts. Do not consume more than 2 wrong-password attempts (5-attempt/15-min lockout).",
+  "rca of the issue": "N/A — regression run only; original Vercel build failure root causes were correctly identified and fixed by main agent."
+}

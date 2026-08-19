@@ -46,3 +46,9 @@ tsconfig.tsbuildinfo
 .config/**
 .next/**
 
+.env
+.env.*
+*.env
+credentials.json
+*.key
+.credentials
